@@ -1,0 +1,136 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Profile • Connect</title>
+    <link rel="stylesheet" href="profile.css">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+</head>
+<body>
+    <header class="profile-header">
+        <div class="container">
+            <div class="brand">
+                <a href="index.html" class="logo">Connect</a>
+            </div>
+            <nav class="nav">
+                <a href="index.html">Home</a>
+                <a href="#" id="go-dashboard">Dashboard</a>
+                <button id="logout-btn" class="btn btn-small btn-outline">Logout</button>
+            </nav>
+        </div>
+    </header>
+
+    <main class="profile-main">
+        <div class="container">
+            <div class="profile-wrapper single">
+                <section class="profile-card full">
+                    <div class="avatar-wrap">
+                        <img id="avatar" src="https://api.dicebear.com/7.x/initials/svg?seed=AP" alt="Profile" />
+                        <label for="avatar-input" class="avatar-upload" title="Change photo"><i class="fas fa-camera"></i></label>
+                        <input id="avatar-input" type="file" accept="image/*" hidden>
+                    </div>
+                    <h2 id="display-name">George Russell</h2>
+                    <p class="muted" id="display-role">Member</p>
+
+                    <div class="info-grid" id="info-view">
+                        <div>
+                            <span class="label">Email</span>
+                            <span class="value" id="view-email">mercedesHatesMe@example.com</span>
+                        </div>
+                        <div>
+                            <span class="label">Phone</span>
+                            <span class="value" id="view-phone">+91 98765 43210</span>
+                        </div>
+                        <div>
+                            <span class="label">Age</span>
+                            <span class="value" id="view-age">28</span>
+                        </div>
+                        <div>
+                            <span class="label">Gender</span>
+                            <span class="value" id="view-gender">Male</span>
+                        </div>
+                        <div class="full">
+                            <span class="label">Location</span>
+                            <span class="value" id="view-location">Bengaluru, IN</span>
+                        </div>
+                    </div>
+
+                    <form class="info-grid" id="info-edit" hidden>
+                        <div>
+                            <label class="label" for="edit-email">Email</label>
+                            <input class="input" id="edit-email" type="email" value="aarav@example.com">
+                        </div>
+                        <div>
+                            <label class="label" for="edit-phone">Phone</label>
+                            <input class="input" id="edit-phone" type="tel" value="+91 98765 43210">
+                        </div>
+                        <div>
+                            <label class="label" for="edit-age">Age</label>
+                            <input class="input" id="edit-age" type="number" min="0" value="28">
+                        </div>
+                        <div>
+                            <label class="label" for="edit-gender">Gender</label>
+                            <select class="input" id="edit-gender">
+                                <option>Male</option>
+                                <option>Female</option>
+                                <option>Other</option>
+                            </select>
+                        </div>
+                        <div class="full">
+                            <label class="label" for="edit-location">Location</label>
+                            <input class="input" id="edit-location" type="text" value="Bengaluru, IN">
+                        </div>
+                    </form>
+
+                    <div class="actions">
+                        <button id="edit-btn" class="btn btn-primary">Edit Profile</button>
+                        <button id="save-btn" class="btn" hidden>Save Changes</button>
+                    </div>
+                </section>
+
+                <section class="profile-content">
+                    <div class="tabs">
+                        <button class="tab active" data-tab="one" id="tab-one">Overview</button>
+                        <button class="tab" data-tab="two" id="tab-two">Details</button>
+                        <button class="tab" data-tab="three" id="tab-three">More</button>
+                    </div>
+
+                    <div class="panels" id="panels">
+                        <div class="panel active" data-panel="one">
+                            <h3>Upcoming Therapy Sessions</h3>
+                            <ul class="list">
+                                <li><span>Sep 18, 10:00</span><strong> Abhyanga Massage</strong></li>
+                                <li><span>Sep 21, 14:30</span><strong> Shirodhara</strong></li>
+                                <li><span>Sep 26, 09:00</span><strong> Swedana</strong></li>
+                            </ul>
+                        </div>
+                        <div class="panel" data-panel="two">
+                            <h3>Notifications / Reminders</h3>
+                            <ul class="list bullets">
+                                <li>Arrive 15 minutes early for preparation.</li>
+                                <li>Avoid heavy meals 2 hours before therapy.</li>
+                                <li>Hydrate well and follow post-therapy rest.</li>
+                            </ul>
+                        </div>
+                        <div class="panel" data-panel="three">
+                            <h3>Progress Tracker</h3>
+                            <div class="progress-card">
+                                <div class="progress-bar"><span style="width: 62%"></span></div>
+                                <p class="muted">62% completion of current regimen</p>
+                            </div>
+                        </div>
+                    </div>
+
+                    
+                </section>
+            </div>
+        </div>
+    </main>
+
+    <script src="profile.js"></script>
+</body>
+</html>
+
+

@@ -1,0 +1,297 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Therapist Dashboard • Connect</title>
+    <link rel="stylesheet" href="dashboard.css">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+</head>
+<body>
+    <div class="app">
+        <aside class="sidebar" id="sidebar">
+            <div class="brand">
+                <button id="sidebar-toggle" class="icon-btn" aria-label="Toggle sidebar"><i class="fas fa-bars"></i></button>
+                <a href="index.html" class="logo">Connect</a>
+            </div>
+            <nav class="menu">
+                <a class="menu-item active" href="#"><i class="fas fa-gauge"></i><span>Dashboard</span></a>
+                <a class="menu-item" href="#appointments"><i class="fas fa-calendar-check"></i><span>Appointments</span></a>
+                <a class="menu-item" href="#patients"><i class="fas fa-user-group"></i><span>Patients</span></a>
+                <a class="menu-item" href="#messages"><i class="fas fa-message"></i><span>Messages</span></a>
+                <a class="menu-item" href="#earnings"><i class="fas fa-indian-rupee-sign"></i><span>Earnings</span></a>
+                <a class="menu-item" href="#reviews"><i class="fas fa-star"></i><span>Reviews</span></a>
+                <a class="menu-item" href="#resources"><i class="fas fa-folder-open"></i><span>Resources</span></a>
+                <a class="menu-item" href="#therapies"><i class="fas fa-spa"></i><span>Therapies</span></a>
+                <a class="menu-item" href="#settings"><i class="fas fa-gear"></i><span>Settings</span></a>
+                <a class="menu-item" href="index.html"><i class="fas fa-right-from-bracket"></i><span>Logout</span></a>
+            </nav>
+        </aside>
+
+        <main class="main">
+            <header class="topbar">
+                <h1 class="welcome">Welcome, Dr. Sharma 👋</h1>
+                <div class="top-actions">
+                    <button class="icon-btn" id="notify-btn" aria-label="Notifications">
+                        <i class="fas fa-bell"></i>
+                        <span class="badge" id="notify-badge">3</span>
+                    </button>
+                    <div class="profile" id="profile-menu">
+                        <img src="https://api.dicebear.com/7.x/initials/svg?seed=DS" alt="Dr. Sharma">
+                        <button class="icon-btn"><i class="fas fa-chevron-down"></i></button>
+                        <div class="dropdown" id="profile-dropdown">
+                            <a href="#settings">Settings</a>
+                            <a href="index.html">Logout</a>
+                        </div>
+                    </div>
+                </div>
+            </header>
+
+            <section class="stats" id="stats">
+                <div class="card stat">
+                    <div class="stat-icon"><i class="fas fa-calendar-day"></i></div>
+                    <div>
+                        <p class="muted">Upcoming Appointments</p>
+                        <h3>6</h3>
+                    </div>
+                </div>
+                <div class="card stat">
+                    <div class="stat-icon"><i class="fas fa-user-check"></i></div>
+                    <div>
+                        <p class="muted">Active Patients</p>
+                        <h3>24</h3>
+                    </div>
+                </div>
+                <div class="card stat">
+                    <div class="stat-icon"><i class="fas fa-sack-dollar"></i></div>
+                    <div>
+                        <p class="muted">Earnings (This Month)</p>
+                        <h3>₹84,200</h3>
+                    </div>
+                </div>
+                <div class="card stat">
+                    <div class="stat-icon"><i class="fas fa-star"></i></div>
+                    <div>
+                        <p class="muted">Average Rating</p>
+                        <h3>4.7</h3>
+                    </div>
+                </div>
+            </section>
+
+            <section class="grid two" id="appointments">
+                <div class="card">
+                    <div class="section-head">
+                        <h2>Today's Schedule</h2>
+                        <div class="actions">
+                            <button class="btn btn-outline" id="btn-reschedule">Reschedule</button>
+                            <button class="btn btn-outline danger" id="btn-cancel">Cancel</button>
+                        </div>
+                    </div>
+                    <div class="table-wrap">
+                        <table class="table selectable" id="schedule-table">
+                            <thead>
+                                <tr><th>Patient</th><th>Time</th><th>Therapy</th><th>Status</th></tr>
+                            </thead>
+                            <tbody id="schedule-body">
+                                <tr data-id="1"><td>Riya Sharma</td><td>10:00</td><td>Abhyanga</td><td><span class="badge success">Completed</span></td></tr>
+                                <tr data-id="2"><td>Karan Mehta</td><td>12:15</td><td>Shirodhara</td><td><span class="badge warn">Pending</span></td></tr>
+                                <tr data-id="3"><td>Neha Verma</td><td>15:30</td><td>Swedana</td><td><span class="badge danger">Cancelled</span></td></tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+                <div class="card">
+                    <div class="section-head"><h2>Calendar</h2></div>
+                    <div id="calendar" class="calendar"></div>
+                </div>
+            </section>
+
+            <section class="grid one" id="patients">
+                <div class="card">
+                    <div class="section-head">
+                        <h2>Patient Management</h2>
+                        <div class="filters">
+                            <input type="text" id="patient-search" placeholder="Search patients...">
+                            <select id="patient-filter">
+                                <option value="all">All</option>
+                                <option value="recent">Recent</option>
+                                <option value="chronic">Chronic</option>
+                            </select>
+                        </div>
+                    </div>
+                    <div class="table-wrap">
+                        <table class="table">
+                            <thead>
+                                <tr><th>Name</th><th>Age</th><th>Condition</th><th>Last Appointment</th><th>Actions</th></tr>
+                            </thead>
+                            <tbody id="patients-body">
+                                <tr><td>Riya Sharma</td><td>29</td><td>Migraine</td><td>Sep 12</td><td><button class="mini">View</button><button class="mini">Add Notes</button></td></tr>
+                                <tr><td>Karan Mehta</td><td>34</td><td>Insomnia</td><td>Sep 10</td><td><button class="mini">View</button><button class="mini">Add Notes</button></td></tr>
+                                <tr><td>Neha Verma</td><td>31</td><td>Stress</td><td>Sep 08</td><td><button class="mini">View</button><button class="mini">Add Notes</button></td></tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </section>
+
+            <section class="grid two" id="messages">
+                <div class="card chat">
+                    <div class="section-head"><h2>Messages</h2></div>
+                    <div class="chat-wrap">
+                        <aside class="chat-list" id="chat-list">
+                            <button class="chat-item active" data-user="Riya Sharma">Riya Sharma</button>
+                            <button class="chat-item" data-user="Karan Mehta">Karan Mehta</button>
+                            <button class="chat-item" data-user="Neha Verma">Neha Verma</button>
+                        </aside>
+                        <div class="chat-window">
+                            <div class="chat-history" id="chat-history"></div>
+                            <div class="chat-input">
+                                <input id="chat-text" type="text" placeholder="Type a message...">
+                                <button id="chat-send" class="btn btn-primary">Send</button>
+                            </div>
+                            <div class="quick-replies">
+                                <button class="mini template">Please stay hydrated.</button>
+                                <button class="mini template">Kindly arrive 10 mins early.</button>
+                                <button class="mini template">Let me know any discomfort.</button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="card" id="earnings">
+                    <div class="section-head"><h2>Earnings & Payments</h2></div>
+                    <div class="tabs small" id="earning-tabs">
+                        <button class="tab active" data-period="weekly">Weekly</button>
+                        <button class="tab" data-period="monthly">Monthly</button>
+                        <button class="tab" data-period="yearly">Yearly</button>
+                    </div>
+                    <div class="earnings-body">
+                        <div id="earning-summary" class="summary">₹22,300 this week</div>
+                        <ul id="pending-payments" class="list payments">
+                            <li><span>Invoice #214</span><strong>₹1,200</strong></li>
+                            <li><span>Invoice #215</span><strong>₹2,400</strong></li>
+                        </ul>
+                        <button class="btn btn-outline" id="download-invoice"><i class="fas fa-download"></i> Download invoice</button>
+                    </div>
+                </div>
+            </section>
+
+            <section class="grid two" id="reviews">
+                <div class="card">
+                    <div class="section-head"><h2>Reviews & Feedback</h2></div>
+                    <ul class="reviews">
+                        <li><span class="stars">⭐⭐⭐⭐⭐</span> Very calming session. — Riya</li>
+                        <li><span class="stars">⭐⭐⭐⭐</span> Slept better after therapy. — Karan</li>
+                        <li><span class="stars">⭐⭐⭐⭐⭐</span> Pain relief improved noticeably. — Neha</li>
+                    </ul>
+                </div>
+                <div class="card avg-rating">
+                    <div class="section-head"><h2>Average Rating</h2></div>
+                    <div class="big-rating">4.7</div>
+                </div>
+            </section>
+
+            <section class="grid two" id="resources">
+                <div class="card">
+                    <div class="section-head"><h2>Resources / Tools</h2></div>
+                    <div class="uploader">
+                        <input type="file" id="resource-upload" multiple>
+                        <button class="btn btn-primary" id="resource-share">Share with patients</button>
+                    </div>
+                    <ul id="resource-list" class="list files"></ul>
+                </div>
+                <div class="card" id="therapies">
+                    <div class="section-head"><h2>Therapies</h2></div>
+                    <div class="accordion" id="therapy-accordion">
+                        <div class="item">
+                            <button class="head">Bashpa Sweda</button>
+                            <div class="body"><p>Steam therapy aiding detoxification and relaxation.</p><p><strong>Benefits:</strong> Improved circulation, relaxation.</p><p><strong>Precautions:</strong> Avoid in high fever.</p></div>
+                        </div>
+                        <div class="item">
+                            <button class="head">Nadi Sweda</button>
+                            <div class="body"><p>Localized steam application for targeted relief.</p><p><strong>Benefits:</strong> Reduces stiffness, pain.</p><p><strong>Precautions:</strong> Sensitive skin caution.</p></div>
+                        </div>
+                        <div class="item">
+                            <button class="head">Pinda Sweda</button>
+                            <div class="body"><p>Bolus fomentation with herbal preparations.</p><p><strong>Benefits:</strong> Joint mobility, pain relief.</p><p><strong>Precautions:</strong> Patch test for allergies.</p></div>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <section class="grid one" id="settings">
+                <div class="card">
+                    <div class="section-head"><h2>Settings</h2></div>
+                    <div class="settings-grid">
+                        <div>
+                            <label>Name</label>
+                            <input type="text" value="Dr. Sharma">
+                        </div>
+                        <div>
+                            <label>Specialization</label>
+                            <input type="text" value="Ayurveda Therapist">
+                        </div>
+                        <div class="full">
+                            <label>Bio</label>
+                            <textarea rows="3">Focused on personalized Ayurveda care.</textarea>
+                        </div>
+                        <div>
+                            <label>Fees (₹)</label>
+                            <input type="number" value="1200">
+                        </div>
+                        <div>
+                            <label>Working Hours</label>
+                            <input type="text" value="Mon-Sat, 9am-6pm">
+                        </div>
+                        <div>
+                            <label>Off Days</label>
+                            <input type="text" value="Sunday">
+                        </div>
+                        <div>
+                            <label>Password</label>
+                            <input type="password" value="password">
+                        </div>
+                        <div>
+                            <label>Two Factor Auth</label>
+                            <select><option>Disabled</option><option>Enabled</option></select>
+                        </div>
+                        <div class="full">
+                            <button class="btn btn-primary">Save Settings</button>
+                        </div>
+                    </div>
+                </div>
+            </section>
+        </main>
+    </div>
+
+    <!-- Modals -->
+    <div class="modal-overlay" id="modal-overlay"></div>
+    <div class="modal" id="modal">
+        <button class="modal-close" id="modal-close" aria-label="Close">❌</button>
+        <h3 id="modal-title">Update Appointment</h3>
+        <div class="modal-body">
+            <label for="modal-appointment">Select Appointment</label>
+            <select id="modal-appointment"></select>
+            <div id="modal-datetime" class="datetime" hidden>
+                <label for="modal-date">Date</label>
+                <input type="date" id="modal-date">
+                <label for="modal-time">Time</label>
+                <input type="time" id="modal-time">
+            </div>
+            <label for="modal-reason">Reason</label>
+            <input type="text" id="modal-reason" placeholder="Enter reason...">
+            <div class="modal-actions">
+                <button class="btn btn-outline" id="modal-cancel">Cancel</button>
+                <button class="btn btn-primary" id="modal-save">Save</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Toasts -->
+    <div id="toasts" class="toasts"></div>
+
+    <script src="dashboard.js"></script>
+</body>
+</html>
+
+
