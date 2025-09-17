@@ -1,3 +1,64 @@
+// =========================
+// Supabase Auth Sign-in Logic
+// =========================
+
+
+// Fetch Supabase credentials from server
+async function getSupabaseCredentials() {
+    const res = await fetch('http://localhost:3001/api/supabase-credentials');
+    if (!res.ok) throw new Error('Failed to fetch Supabase credentials');
+    return await res.json();
+}
+
+// Load Supabase JS if not already loaded
+if (window.supabase === undefined) {
+    const supabaseScript = document.createElement('script');
+    supabaseScript.src = 'https://cdn.jsdelivr.net/npm/@supabase/supabase-js';
+    document.head.appendChild(supabaseScript);
+}
+
+let supabaseClient;
+document.addEventListener('DOMContentLoaded', async function() {
+    // Wait for Supabase JS to load
+    function waitForSupabase() {
+        return new Promise(resolve => {
+            (function check() {
+                if (window.supabase) return resolve();
+                setTimeout(check, 50);
+            })();
+        });
+    }
+    await waitForSupabase();
+    try {
+        const creds = await getSupabaseCredentials();
+        supabaseClient = window.supabase.createClient(creds.url, creds.key);
+    } catch (err) {
+        alert('Supabase config error: ' + err.message);
+    }
+});
+
+// Sign-in form handler
+const signinForm = document.getElementById('form-signin'); // Updated to match index.html
+if (signinForm) {
+    signinForm.addEventListener('submit', async function(e) {
+        e.preventDefault();
+        console.log('Sign-in form submitted');
+        if (!supabaseClient) {
+            supabaseClient = window.supabase.createClient(SUPABASE_URL, SUPABASE_KEY);
+        }
+        const email = document.getElementById('signin-email').value;
+        const password = document.getElementById('signin-password').value;
+        console.log('Attempting sign-in with:', email);
+        const { data, error } = await supabaseClient.auth.signInWithPassword({ email, password });
+        if (error) {
+            console.error('Sign-in error:', error);
+            alert('Sign-in failed: ' + error.message);
+        } else {
+            console.log('Sign-in successful:', data);
+            window.location.href = '/public/html/dashboard.html';
+        }
+    });
+}
 // Mobile Navigation Toggle
 const mobileMenu = document.getElementById('mobile-menu');
 const navMenu = document.querySelector('.nav-menu');

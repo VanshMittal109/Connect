@@ -123,7 +123,7 @@ function addRow(data) {
 }
 
 // Submit handler
-form?.addEventListener('submit', (e) => {
+form?.addEventListener('submit', async (e) => {
   e.preventDefault();
   clearAllErrors();
   if (!validate()) {
@@ -136,13 +136,22 @@ form?.addEventListener('submit', (e) => {
     email: fields.email.value.trim(),
     age: Number(fields.age.value),
     gender: fields.gender.value,
-    join: fields.join.value,
-    complete: fields.complete.value,
-    history: fields.history.value.trim()
+    joining_date: fields.join.value
   };
-  addRow(data);
-  openModal('Patient added successfully');
-  form.reset();
+  try {
+  const res = await fetch('http://localhost:3001/api/patients', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify(data)
+    });
+    if (!res.ok) throw new Error('Failed to add patient');
+    const result = await res.json();
+    addRow(data);
+    openModal('Patient added successfully');
+    form.reset();
+  } catch (err) {
+    toast('Error: ' + err.message, 'error');
+  }
 });
 
 // Reset button toast

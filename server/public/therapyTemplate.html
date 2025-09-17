@@ -1,0 +1,302 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Therapy Planner</title>
+  <style>
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
+
+    body {
+      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+      background: linear-gradient(135deg, #f5f7fa 0%, #c3cfe2 100%);
+      color: #333;
+      line-height: 1.6;
+      padding: 20px;
+      min-height: 100vh;
+    }
+
+    .container {
+      max-width: 800px;
+      margin: 0 auto;
+      background: white;
+      padding: 25px;
+      border-radius: 10px;
+      box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
+    }
+
+    h1 {
+      color: #2c5530;
+      text-align: center;
+      margin-bottom: 20px;
+    }
+
+    .therapy-selector {
+      margin: 25px 0;
+      padding: 20px;
+      background: #f8f9fa;
+      border-radius: 8px;
+    }
+
+    select, button {
+      padding: 12px 15px;
+      margin: 8px 0;
+      border-radius: 6px;
+      border: 1px solid #ddd;
+      font-size: 16px;
+    }
+
+    select {
+      width: 100%;
+      margin-bottom: 15px;
+    }
+
+    button {
+      background: #2c5530;
+      color: white;
+      border: none;
+      cursor: pointer;
+      width: 100%;
+      transition: background 0.3s;
+    }
+
+    button:hover {
+      background: #1e3a23;
+    }
+
+    .therapy-list {
+      list-style: none;
+      padding: 0;
+      margin-top: 25px;
+    }
+
+    .therapy-item {
+      background: #f8f9fa;
+      padding: 15px;
+      margin: 12px 0;
+      border-radius: 8px;
+      border-left: 4px solid #2c5530;
+      position: relative;
+    }
+
+    .therapy-name {
+      font-weight: 600;
+      color: #2c5530;
+      margin-bottom: 5px;
+    }
+
+    .therapy-details {
+      color: #6c757d;
+      font-size: 0.9rem;
+      margin-bottom: 8px;
+    }
+
+    .remove-btn {
+      background: #e74c3c;
+      color: white;
+      border: none;
+      border-radius: 4px;
+      padding: 6px 12px;
+      cursor: pointer;
+      position: absolute;
+      top: 15px;
+      right: 15px;
+    }
+
+    .remove-btn:hover {
+      background: #c0392b;
+    }
+
+    .status-message {
+      padding: 12px;
+      border-radius: 6px;
+      margin: 15px 0;
+      text-align: center;
+      display: none;
+    }
+
+    .status-success {
+      background: #d4edda;
+      color: #155724;
+      border: 1px solid #c3e6cb;
+    }
+
+    .status-error {
+      background: #f8d7da;
+      color: #721c24;
+      border: 1px solid #f5c6cb;
+    }
+
+    .loading {
+      display: inline-block;
+      width: 20px;
+      height: 20px;
+      border: 3px solid rgba(255,255,255,.3);
+      border-radius: 50%;
+      border-top-color: #fff;
+      animation: spin 1s ease-in-out infinite;
+      margin-right: 10px;
+    }
+
+    @keyframes spin {
+      to { transform: rotate(360deg); }
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <h1>Panchakarma Therapy Planner</h1>
+    
+    <div class="therapy-selector">
+      <label for="therapySelect"><strong>Select a Therapy Process:</strong></label>
+      <select id="therapySelect">
+        <option value="">Loading therapies...</option>
+      </select>
+      <button onclick="addTherapy()">Add to List</button>
+    </div>
+
+    <div id="statusMessage" class="status-message"></div>
+
+    <h2>Selected Therapies</h2>
+    <ul id="therapyList" class="therapy-list">
+      <li class="therapy-item">
+        <div class="therapy-name">No therapies selected yet</div>
+        <div class="therapy-details">Select therapies from the dropdown above</div>
+      </li>
+    </ul>
+  </div>
+
+  <script>
+    let therapies = [];
+    let selectedTherapies = [];
+
+    // Load therapies when page loads
+    document.addEventListener('DOMContentLoaded', loadTherapies);
+
+    async function loadTherapies() {
+      try {
+        showStatus('Loading therapies from database...', 'info');
+        
+        const response = await fetch('/api/therapies');
+        
+        if (!response.ok) {
+          throw new Error(`Server returned ${response.status} error`);
+        }
+        
+        therapies = await response.json();
+        
+        const select = document.getElementById('therapySelect');
+        select.innerHTML = '<option value="">Select a therapy...</option>';
+        
+        therapies.forEach(therapy => {
+          const option = document.createElement('option');
+          option.value = therapy.id;
+          option.textContent = `${therapy.name} (${therapy.duration} days)`;
+          option.title = therapy.description || 'No description available';
+          select.appendChild(option);
+        });
+        
+        showStatus('Therapies loaded successfully!', 'success');
+        
+      } catch (error) {
+        console.error('Error loading therapies:', error);
+        showStatus('Error: ' + error.message, 'error');
+        
+        const select = document.getElementById('therapySelect');
+        select.innerHTML = '<option value="">Error loading therapies</option>';
+      }
+    }
+
+    function addTherapy() {
+      const select = document.getElementById('therapySelect');
+      const selectedId = select.value;
+      
+      if (!selectedId) {
+        showStatus('Please select a therapy first', 'error');
+        return;
+      }
+      
+      const therapy = therapies.find(t => t.id == selectedId);
+      
+      if (selectedTherapies.some(t => t.id == selectedId)) {
+        showStatus('This therapy is already in your list', 'error');
+        return;
+      }
+      
+      selectedTherapies.push(therapy);
+      updateTherapyList();
+      select.value = '';
+      
+      showStatus(`Added "${therapy.name}" to your list`, 'success');
+    }
+
+    function removeTherapy(id) {
+      const therapy = selectedTherapies.find(t => t.id == id);
+      selectedTherapies = selectedTherapies.filter(t => t.id != id);
+      updateTherapyList();
+      
+      showStatus(`Removed "${therapy.name}" from your list`);
+    }
+
+    function updateTherapyList() {
+      const list = document.getElementById('therapyList');
+      
+      if (selectedTherapies.length === 0) {
+        list.innerHTML = `
+          <li class="therapy-item">
+            <div class="therapy-name">No therapies selected yet</div>
+            <div class="therapy-details">Select therapies from the dropdown above</div>
+          </li>
+        `;
+        return;
+      }
+      
+      list.innerHTML = '';
+      
+      selectedTherapies.forEach(therapy => {
+        const li = document.createElement('li');
+        li.className = 'therapy-item';
+        li.innerHTML = `
+          <div class="therapy-info">
+            <div class="therapy-name">${therapy.name}</div>
+            <div class="therapy-details">
+              Type: ${therapy.type || 'N/A'} | 
+              Duration: ${therapy.duration} days
+              ${therapy.description ? '| ' + therapy.description : ''}
+            </div>
+          </div>
+          <button class="remove-btn" onclick="removeTherapy(${therapy.id})">
+            Remove
+          </button>
+        `;
+        list.appendChild(li);
+      });
+    }
+
+    function showStatus(message, type = '') {
+      const statusDiv = document.getElementById('statusMessage');
+      statusDiv.textContent = message;
+      statusDiv.className = 'status-message';
+      
+      if (type === 'error') {
+        statusDiv.classList.add('status-error');
+      } else if (type === 'success') {
+        statusDiv.classList.add('status-success');
+      }
+      
+      statusDiv.style.display = 'block';
+      
+      // Clear status after 4 seconds if it's not an ongoing message
+      if (type) {
+        setTimeout(() => {
+          statusDiv.style.display = 'none';
+        }, 4000);
+      }
+    }
+  </script>
+</body>
+</html>

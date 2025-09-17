@@ -6,7 +6,7 @@
     <title>Add New Patient • Connect</title>
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
-    <link rel="stylesheet" href="public/css/add_user.css">
+    <link rel="stylesheet" href="../css/add_user.css">
 </head>
 <body>
     <header class="page-header">
@@ -28,7 +28,7 @@
                     </div>
                     <div class="field">
                         <label for="contact">Contact Number</label>
-                        <input id="contact" type="tel" inputmode="numeric" placeholder="Enter 10-digit mobile number" required>
+                        <input id="contact" type="tel" inputmode="numeric" placeholder="Enter 10-digit mobile number" >
                         <small class="error" data-for="contact"></small>
                     </div>
                     <div class="field">
@@ -38,32 +38,32 @@
                     </div>
                     <div class="field">
                         <label for="age">Age</label>
-                        <input id="age" type="number" min="1" step="1" placeholder="Enter age" required>
+                        <input id="age" type="number" min="1" step="1" placeholder="Enter age" >
                         <small class="error" data-for="age"></small>
                     </div>
                     <div class="field">
                         <label for="gender">Gender</label>
                         <select id="gender" required>
-                            <option value="">Select</option>
-                            <option>Male</option>
-                            <option>Female</option>
-                            <option>Other</option>
+                            <option value="">Select Gender</option>
+                            <option value="Male">Male</option>
+                            <option value="Female">Female</option>
+                            <option value="Other">Other</option>
                         </select>
                         <small class="error" data-for="gender"></small>
                     </div>
                     <div class="field">
                         <label for="join">Joining Date</label>
-                        <input id="join" type="date" required>
+                        <input id="join" type="date" >
                         <small class="error" data-for="join"></small>
                     </div>
                     <div class="field">
                         <label for="complete">Completion Date</label>
-                        <input id="complete" type="date" required>
+                        <input id="complete" type="date" >
                         <small class="error" data-for="complete"></small>
                     </div>
                     <div class="field full">
                         <label for="history">Medical History</label>
-                        <textarea id="history" rows="4" placeholder="Enter any relevant medical history" required></textarea>
+                        <textarea id="history" rows="4" placeholder="Enter any relevant medical history" ></textarea>
                         <small class="error" data-for="history"></small>
                     </div>
                 </div>
@@ -123,7 +123,7 @@
     <!-- Toasts -->
     <div id="toasts" class="toasts"></div>
 
-    <script src="public/js/add_user.js"></script>
+    <script src="../js/add_user.js"></script>
     
 </body>
 </html>
