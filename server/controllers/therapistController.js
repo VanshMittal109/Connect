@@ -1,11 +1,11 @@
 const bcrypt = require('bcrypt');
 const { promisePool } = require('../config/database');
 
-// Create a new patient (MySQL)
-exports.createPatient = async (req, res) => {
+// Create a new therapist (MySQL)
+exports.createTherapist = async (req, res) => {
     try {
-        const { email, password, name, medical_history } = req.body;
-        if (!email || !password || !name) {
+        const { email, password, name, specialization } = req.body;
+        if (!email || !password || !name || !specialization) {
             return res.status(400).json({ error: 'Missing required fields' });
         }
 
@@ -16,16 +16,16 @@ exports.createPatient = async (req, res) => {
         // Insert into users table
         const [userResult] = await promisePool.execute(
             'INSERT INTO users (email, password_hash, role, name) VALUES (?, ?, ?, ?)',
-            [email, passwordHash, 'patient', name]
+            [email, passwordHash, 'therapist', name]
         );
 
-        // Insert into patients table
+        // Insert into therapists table
         await promisePool.execute(
-            'INSERT INTO patients (user_id, medical_history) VALUES (?, ?)',
-            [userResult.insertId, medical_history || '']
+            'INSERT INTO therapists (user_id, specialization) VALUES (?, ?)',
+            [userResult.insertId, specialization]
         );
 
-        res.status(201).json({ message: 'Patient created successfully', user_id: userResult.insertId });
+        res.status(201).json({ message: 'Therapist created successfully', user_id: userResult.insertId });
     } catch (error) {
         console.error('MySQL insert error:', error);
         res.status(500).json({ error: error.message });

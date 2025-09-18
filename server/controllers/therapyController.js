@@ -1,4 +1,4 @@
-const supabase = require('../config/supabaseClient');
+const supabase = require('../config/database');
 
 // Get all therapy processes for the dropdown
 const getAllTherapies = async (req, res) => {
