@@ -1,8 +1,7 @@
-
 const express = require('express');
 const cors = require('cors');
 const path = require('path');
-require('../Connect/node_modules/dotenv/lib/main').config();
+require('dotenv').config();
 
 const app = express();
 const PORT = process.env.PORT || 3001;
@@ -12,56 +11,36 @@ app.use(cors());
 app.use(express.json());
 
 // Serve static files from public directory
-app.use(express.static(path.join(__dirname, './public')));
+app.use(express.static(path.join(__dirname, '../public')));
 
-// Import and use therapy routes
-const therapyRoutes = require('./routes/therapyRoutes');
-app.use('/api/therapies', therapyRoutes);
 
-// Import and use patient routes
-const patientRoutes = require('./routes/patientRoutes');
-app.use('/api/patients', patientRoutes);
+// Routes
+const authRoutes = require('./routes/authRoutes');
+app.use('/api/auth', authRoutes);
 
-// Health check endpoint
-app.get('/api/health', (req, res) => {
+const appRoutes = require('./routes/appRoutes');
+app.use('/api', appRoutes);
+
+
+// Serve main HTML file for all routes
+app.get('*', (req, res) => {
+  res.sendFile(path.join(__dirname, '../public/index.html'));
+});
+
+// Add this before the catch-all route
+app.get('/api/test', (req, res) => {
   res.json({ 
-    message: 'API is running',
-    status: 'healthy',
-    timestamp: new Date().toISOString()
+    message: 'Server is working!',
+    timestamp: new Date().toISOString(),
+    status: 'healthy'
   });
 });
 
-// Serve HTML page for the root route
-app.get('/', (req, res) => {
-  res.sendFile(path.join(__dirname, './public/createUser.html'));
-});
 
-
-// Endpoint to provide Supabase credentials to frontend
-app.get('/api/supabase-credentials', (req, res) => {
-  res.json({
-    url: process.env.SUPABASE_URL,
-    key: process.env.SUPABASE_ANON_KEY
-  });
-});
-
-// 404 handler for API routes
-app.use('/api', (req, res) => {
-  res.status(404).json({ 
-    error: 'API endpoint not found',
-    path: req.originalUrl,
-    availableEndpoints: ['/api/health', '/api/therapies', '/api/supabase-credentials']
-  });
-});
-
-// Catch-all route for frontend - MUST be last
-app.use((req, res) => {
-  res.status(404).send('Page not found');
-});
 
 // Start server
 app.listen(PORT, () => {
   console.log(`🚀 Server running on http://localhost:${PORT}`);
-  console.log(`📋 API Health: http://localhost:${PORT}/api/health`);
-  console.log(`💊 Therapies API: http://localhost:${PORT}/api/therapies`);
+  console.log(`📋 API Health: http://localhost:${PORT}/api/test`);
+  console.log(`🌐 Frontend: http://localhost:${PORT}`);
 });

@@ -1,64 +1,121 @@
-// =========================
-// Supabase Auth Sign-in Logic
-// =========================
-
-
-// Fetch Supabase credentials from server
-async function getSupabaseCredentials() {
-    const res = await fetch('http://localhost:3001/api/supabase-credentials');
-    if (!res.ok) throw new Error('Failed to fetch Supabase credentials');
-    return await res.json();
-}
-
-// Load Supabase JS if not already loaded
-if (window.supabase === undefined) {
-    const supabaseScript = document.createElement('script');
-    supabaseScript.src = 'https://cdn.jsdelivr.net/npm/@supabase/supabase-js';
-    document.head.appendChild(supabaseScript);
-}
-
-let supabaseClient;
-document.addEventListener('DOMContentLoaded', async function() {
-    // Wait for Supabase JS to load
-    function waitForSupabase() {
-        return new Promise(resolve => {
-            (function check() {
-                if (window.supabase) return resolve();
-                setTimeout(check, 50);
-            })();
-        });
+// Check authentication status - SIMPLIFIED
+async function checkAuthentication() {
+  try {
+    const response = await fetch('/api/auth/check', {
+      credentials: 'include'
+    });
+    
+    if (response.ok) {
+      const data = await response.json();
+      if (data.authenticated && data.user && data.user.role) {
+        console.log('User already authenticated:', data.user.role);
+        return true;
+      }
     }
-    await waitForSupabase();
+    return false;
+  } catch (error) {
+    console.error('Auth check error:', error);
+    return false;
+  }
+}
+
+// Setup login page
+function setupLoginPage() {
+  // Add toggle password visibility functionality
+  document.querySelectorAll('.toggle-visibility').forEach(button => {
+    button.addEventListener('click', function() {
+      const targetId = this.getAttribute('data-target');
+      const passwordInput = document.getElementById(targetId);
+      
+      if (passwordInput.type === 'password') {
+        passwordInput.type = 'text';
+        this.setAttribute('aria-label', 'Hide password');
+      } else {
+        passwordInput.type = 'password';
+        this.setAttribute('aria-label', 'Show password');
+      }
+    });
+  });
+}
+
+// Sign-in form handler - SIMPLIFIED
+function setupSignInForm() {
+  const signinForm = document.getElementById('form-signin');
+  
+  if (!signinForm) return;
+  
+  signinForm.addEventListener('submit', async (e) => {
+    e.preventDefault();
+    
+    const email = document.getElementById('signin-email').value;
+    const password = document.getElementById('signin-password').value;
+    
+    // Show loading state
+    const submitBtn = e.target.querySelector('button[type="submit"]');
+    const originalText = submitBtn.textContent;
+    submitBtn.textContent = 'Signing in...';
+    submitBtn.disabled = true;
+    
     try {
-        const creds = await getSupabaseCredentials();
-        supabaseClient = window.supabase.createClient(creds.url, creds.key);
-    } catch (err) {
-        alert('Supabase config error: ' + err.message);
+      const response = await fetch('/api/auth/signin', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        credentials: 'include',
+        body: JSON.stringify({ email, password })
+      });
+
+      const data = await response.json();
+
+      if (data.success) {
+        // Successful sign-in - show manual redirect button
+        showSuccessMessage(data.redirectUrl);
+      } else {
+        // Show error message
+        showErrorMessage(data.error || 'Sign-in failed');
+        submitBtn.textContent = originalText;
+        submitBtn.disabled = false;
+      }
+    } catch (error) {
+      showErrorMessage('Network error: ' + error.message);
+      submitBtn.textContent = originalText;
+      submitBtn.disabled = false;
     }
+  });
+}
+
+// Show success message with manual redirect
+function showSuccessMessage(redirectUrl) {
+  const signinForm = document.getElementById('form-signin');
+  signinForm.innerHTML = `
+    <div style="text-align: center; padding: 20px;">
+      <h2 style="color: #4CAF50; margin-bottom: 20px;">✅ Sign-in Successful!</h2>
+      <p style="margin-bottom: 20px;">You can now proceed to your dashboard.</p>
+      <button onclick="window.location.href='${redirectUrl}'" 
+              style="padding: 12px 24px; background: #4CAF50; color: white; border: none; border-radius: 6px; font-size: 16px; cursor: pointer;">
+        Go to Dashboard
+      </button>
+    </div>
+  `;
+}
+
+// Show error message
+function showErrorMessage(message) {
+  alert('Error: ' + message);
+}
+
+// Initialize when DOM is loaded
+document.addEventListener('DOMContentLoaded', function() {
+  console.log('Auth system initialized');
+  setupLoginPage();
+  setupSignInForm();
 });
 
-// Sign-in form handler
-const signinForm = document.getElementById('form-signin'); // Updated to match index.html
-if (signinForm) {
-    signinForm.addEventListener('submit', async function(e) {
-        e.preventDefault();
-        console.log('Sign-in form submitted');
-        if (!supabaseClient) {
-            supabaseClient = window.supabase.createClient(SUPABASE_URL, SUPABASE_KEY);
-        }
-        const email = document.getElementById('signin-email').value;
-        const password = document.getElementById('signin-password').value;
-        console.log('Attempting sign-in with:', email);
-        const { data, error } = await supabaseClient.auth.signInWithPassword({ email, password });
-        if (error) {
-            console.error('Sign-in error:', error);
-            alert('Sign-in failed: ' + error.message);
-        } else {
-            console.log('Sign-in successful:', data);
-            window.location.href = '/public/html/dashboard.html';
-        }
-    });
-}
+// Make functions available globally
+window.checkAuthentication = checkAuthentication;
+window.setupLoginPage = setupLoginPage;
+
 // Mobile Navigation Toggle
 const mobileMenu = document.getElementById('mobile-menu');
 const navMenu = document.querySelector('.nav-menu');
@@ -274,14 +331,6 @@ document.querySelectorAll('.auth-link').forEach(link => {
     });
 });
 
-// Prevent form submission (demo only)
-document.querySelectorAll('.auth-form').forEach(form => {
-    form.addEventListener('submit', (e) => {
-        e.preventDefault();
-        // TODO: hook up real auth
-        closeAuthModal();
-    });
-});
 
 // Password visibility toggles
 document.querySelectorAll('.toggle-visibility').forEach(btn => {

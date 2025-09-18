@@ -174,3 +174,19 @@ document.getElementById('submit-review')?.addEventListener('click', () => {
 document.getElementById('save-settings')?.addEventListener('click', () => toast('Settings saved', 'success'));
 
 
+async function logout() {
+    try {
+        const response = await fetch('/api/auth/signout', {
+            method: 'POST',
+            credentials: 'include'
+        });
+        
+        // Always redirect to main index.html (root level)
+        window.location.href = '/index.html';
+    } catch (error) {
+        // Still redirect even if API call fails
+        window.location.href = '/index.html';
+    }
+}
+
+
