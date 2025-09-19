@@ -87,8 +87,8 @@ document.addEventListener('DOMContentLoaded', function() {
         const gapRow = document.createElement('div');
         gapRow.className = 'gap-row';
         gapRow.innerHTML = `
-            <input type="number" class="form-control gap-duration" min="5" max="60" value="15" required>
-            <span>minutes gap before next therapy</span>
+            <input type="number" class="form-control gap-duration" min="1" required>
+            <span> gap duration before next therapy</span>
             <button type="button" class="btn-icon remove-gap" title="Remove gap">
                 <i class="fas fa-times"></i>
             </button>
