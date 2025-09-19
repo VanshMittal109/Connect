@@ -28,18 +28,13 @@
                     </div>
                     <div class="field">
                         <label for="contact">Contact Number</label>
-                        <input id="contact" type="tel" inputmode="numeric" placeholder="Enter 10-digit mobile number" >
+                        <input id="contact" type="tel" inputmode="numeric" placeholder="Enter 10-digit mobile number" required>
                         <small class="error" data-for="contact"></small>
                     </div>
                     <div class="field">
                         <label for="email">Email</label>
                         <input id="email" type="email" placeholder="Enter email address" required>
                         <small class="error" data-for="email"></small>
-                    </div>
-                    <div class="field">
-                        <label for="age">Age</label>
-                        <input id="age" type="number" min="1" step="1" placeholder="Enter age" >
-                        <small class="error" data-for="age"></small>
                     </div>
                     <div class="field">
                         <label for="gender">Gender</label>
@@ -58,17 +53,11 @@
                     </div>
                     
                     <div class="field">
-                        <label for="complete">Completion Date</label>
-                        <input id="complete" type="date" name="complete">
-                        <small class="error" data-for="complete"></small>
+                        <label for="dob">Date Of Birth</label>
+                        <input id="dob" type="date" name="dob" required>
+                        <small class="error" data-for="dob"></small>
                     </div>
                     
-                    <div class="field full">
-                        <label for="history">Medical History</label>
-                        <textarea id="history" name="history" rows="4" placeholder="Enter any relevant medical history"></textarea>
-                        <small class="error" data-for="history"></small>
-                    </div>                    
-                </div>
 
                 <div class="actions">
                     <button type="reset" class="btn btn-outline" id="reset-btn">Reset</button>
@@ -85,12 +74,11 @@
                         <tr>
                             <th>Patient ID</th>
                             <th>Name</th>
-                            <th>Age</th>
                             <th>Gender</th>
                             <th>Contact</th>
                             <th>Email</th>
                             <th>Joining Date</th>
-                            <th>Completion Date</th>
+                            <th>Date Of Birth</th>
                             <th>Actions</th>
                         </tr>
                     </thead>

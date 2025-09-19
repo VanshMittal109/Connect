@@ -69,14 +69,21 @@ function setupSignInForm() {
       const data = await response.json();
 
       if (data.success) {
-        // Successful sign-in - show manual redirect button
-        showSuccessMessage(data.redirectUrl);
+        // Successful sign-in - redirect to dashboard based on role
+        if (data.user.role === 'therapist') {
+          window.location.href = '/html/therapist-dashboard.html';
+        } else if (data.user.role === 'patient') {
+          window.location.href = '/html/patient-dashboard.html';
+        } else {
+          window.location.href = data.redirectUrl || '/';
+        }
       } else {
         // Show error message
         showErrorMessage(data.error || 'Sign-in failed');
         submitBtn.textContent = originalText;
         submitBtn.disabled = false;
       }
+// Dashboard data fetching should be handled in dashboard-specific JS files or controllers.
     } catch (error) {
       showErrorMessage('Network error: ' + error.message);
       submitBtn.textContent = originalText;
@@ -85,24 +92,32 @@ function setupSignInForm() {
   });
 }
 
-// Show success message with manual redirect
-function showSuccessMessage(redirectUrl) {
-  const signinForm = document.getElementById('form-signin');
-  signinForm.innerHTML = `
-    <div style="text-align: center; padding: 20px;">
-      <h2 style="color: #4CAF50; margin-bottom: 20px;">✅ Sign-in Successful!</h2>
-      <p style="margin-bottom: 20px;">You can now proceed to your dashboard.</p>
-      <button onclick="window.location.href='${redirectUrl}'" 
-              style="padding: 12px 24px; background: #4CAF50; color: white; border: none; border-radius: 6px; font-size: 16px; cursor: pointer;">
-        Go to Dashboard
-      </button>
-    </div>
-  `;
-}
-
 // Show error message
 function showErrorMessage(message) {
   alert('Error: ' + message);
+}
+
+// Logout handler for dashboards
+function setupLogout() {
+  const logoutLinks = document.querySelectorAll('a.logout');
+  logoutLinks.forEach(link => {
+    link.addEventListener('click', async (e) => {
+      e.preventDefault();
+      try {
+        const response = await fetch('/api/auth/signout', {
+          method: 'POST',
+          credentials: 'include'
+        });
+        if (response.ok) {
+                    window.location.replace('/'); // Hard redirect to root public index page
+        } else {
+          alert('Logout failed');
+        }
+      } catch (error) {
+        alert('Logout error: ' + error.message);
+      }
+    });
+  });
 }
 
 // Initialize when DOM is loaded
@@ -110,6 +125,7 @@ document.addEventListener('DOMContentLoaded', function() {
   console.log('Auth system initialized');
   setupLoginPage();
   setupSignInForm();
+  setupLogout();
 });
 
 // Make functions available globally

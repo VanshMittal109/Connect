@@ -1,3 +1,29 @@
+// Role-based access enforcement for patient dashboard
+document.addEventListener('DOMContentLoaded', async () => {
+    try {
+        const response = await fetch('/api/auth/patient-dashboard', {
+            credentials: 'include'
+        });
+        if (response.status === 403) {
+            // Not a patient, redirect to therapist dashboard or login
+            window.location.replace('/therapist-dashboard.html');
+            return;
+        }
+        if (!response.ok) {
+            // Not authenticated, redirect to login
+            window.location.replace('/');
+            return;
+        }
+        const data = await response.json();
+        // Render therapist-specific data here
+        const msgEl = document.getElementById('dashboard-message');
+        if (msgEl && data.message) msgEl.textContent = data.message;
+        // You can use data.user for more info
+    } catch (error) {
+        window.location.replace('/');
+    }
+});
+
 // Sidebar toggle
 const sidebar = document.getElementById('sidebar');
 const sidebarToggle = document.getElementById('sidebar-toggle');
@@ -173,20 +199,5 @@ document.getElementById('submit-review')?.addEventListener('click', () => {
 // Settings save
 document.getElementById('save-settings')?.addEventListener('click', () => toast('Settings saved', 'success'));
 
-
-async function logout() {
-    try {
-        const response = await fetch('/api/auth/signout', {
-            method: 'POST',
-            credentials: 'include'
-        });
-        
-        // Always redirect to main index.html (root level)
-        window.location.href = '/index.html';
-    } catch (error) {
-        // Still redirect even if API call fails
-        window.location.href = '/index.html';
-    }
-}
 
 

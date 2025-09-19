@@ -196,35 +196,3 @@ accordion?.addEventListener('click', (e) => {
 document.getElementById('download-invoice')?.addEventListener('click', () => toast('Invoice downloaded', 'success'));
 
 
-async function logout() {
-    try {
-        const response = await fetch('/api/auth/signout', {
-            method: 'POST',
-            credentials: 'include'
-        });
-        
-        // Always redirect to main index.html (root level)
-        window.location.href = '/index.html';
-    } catch (error) {
-        // Still redirect even if API call fails
-        window.location.href = '/index.html';
-    }
-}
-
-// Add logout button
-const logoutBtn = document.createElement('button');
-logoutBtn.textContent = 'Sign Out';
-logoutBtn.style.cssText = `
-    position: fixed;
-    top: 20px;
-    right: 20px;
-    padding: 10px 20px;
-    background: #ff4444;
-    color: white;
-    border: none;
-    border-radius: 6px;
-    cursor: pointer;
-`;
-logoutBtn.onclick = logout;
-
-document.body.appendChild(logoutBtn);
