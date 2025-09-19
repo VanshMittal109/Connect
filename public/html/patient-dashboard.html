@@ -13,15 +13,13 @@
         <aside class="sidebar" id="sidebar">
             <div class="brand">
                 <button id="sidebar-toggle" class="icon-btn" aria-label="Toggle sidebar"><i class="fas fa-bars"></i></button>
-                <a href="index.html" class="logo">Connect</a>
+                <a href="index.html" class="logo">Ayur Sutra</a>
             </div>
             <nav class="menu">
                 <a class="menu-item active" href="user-dashboard.html"><i class="fas fa-gauge"></i><span>Dashboard</span></a>
-                <a class="menu-item" href="appoint-therapy.html"><i class="fas fa-calendar-check"></i><span>My Appointments</span></a>
-                <a class="menu-item" href="learn_more.html"><i class="fas fa-spa"></i><span>My Therapies</span></a>
+                <a class="menu-item" href="#Appointment"><i class="fas fa-calendar-check"></i><span>My Appointments</span></a>
                 <a class="menu-item" href="#notifications"><i class="fas fa-bell"></i><span>Notifications</span></a>
                 <a class="menu-item" href="#progress"><i class="fas fa-chart-line"></i><span>Progress</span></a>
-                <a class="menu-item" href="#payments"><i class="fas fa-indian-rupee-sign"></i><span>Payments</span></a>
                 <a class="menu-item" href="#feedback"><i class="fas fa-star"></i><span>Feedback</span></a>
                 <a class="menu-item" href="#settings"><i class="fas fa-gear"></i><span>Settings</span></a>
                 <a class="menu-item" href="index.html"><i class="fas fa-right-from-bracket"></i><span>Logout</span></a>
@@ -110,41 +108,6 @@
 
             <!-- Therapies Accordion -->
             <section class="grid one" id="therapies">
-                <div class="card">
-                    <div class="section-head"><h2>My Therapies</h2></div>
-                    <div class="accordion" id="therapy-accordion">
-                        <div class="item">
-                            <button class="head">Bashpa Sweda <span class="muted">• 3/7 sessions</span></button>
-                            <div class="body">
-                                <p>Steam therapy aiding detoxification and relaxation.</p>
-                                <p><strong>Pre-care:</strong> Come on empty stomach.</p>
-                                <p><strong>Post-care:</strong> Avoid cold water for 2 hours.</p>
-                                <div class="progress"><div class="bar" style="width:43%"></div></div>
-                                <p class="muted">Therapist notes: Continue hydration and light meals.</p>
-                            </div>
-                        </div>
-                        <div class="item">
-                            <button class="head">Pinda Sweda <span class="muted">• 5/8 sessions</span></button>
-                            <div class="body">
-                                <p>Bolus fomentation with herbal preparations for joints and muscles.</p>
-                                <p><strong>Pre-care:</strong> Wear loose clothing.</p>
-                                <p><strong>Post-care:</strong> Rest for 30 minutes.</p>
-                                <div class="progress"><div class="bar" style="width:62%"></div></div>
-                                <p class="muted">Therapist notes: Mobility improving, continue stretches.</p>
-                            </div>
-                        </div>
-                        <div class="item">
-                            <button class="head">Nadi Sweda <span class="muted">• 1/6 sessions</span></button>
-                            <div class="body">
-                                <p>Localized steam application for targeted relief.</p>
-                                <p><strong>Pre-care:</strong> Inform about any skin sensitivity.</p>
-                                <p><strong>Post-care:</strong> Keep area warm.</p>
-                                <div class="progress"><div class="bar" style="width:17%"></div></div>
-                                <p class="muted">Therapist notes: Start with lower intensity.</p>
-                            </div>
-                        </div>
-                    </div>
-                </div>
             </section>
 
             <!-- Notifications -->
@@ -173,54 +136,13 @@
                         <div class="bar" style="height:86%"></div>
                     </div>
                 </div>
-                <div class="card">
-                    <div class="section-head"><h2>Reports</h2></div>
-                    <p class="muted">Symptoms improved: Sleep quality, stress levels.</p>
-                    <button class="btn btn-outline" id="download-report"><i class="fas fa-file-arrow-down"></i> Download Health Report (PDF)</button>
-                </div>
             </section>
 
-            <!-- Payments & Plans -->
-            <section class="grid two" id="payments">
-                <div class="card">
-                    <div class="section-head"><h2>Payment History</h2></div>
-                    <div class="table-wrap">
-                        <table class="table" id="payment-table">
-                            <thead>
-                                <tr><th>Date</th><th>Therapy</th><th>Amount</th><th>Status</th></tr>
-                            </thead>
-                            <tbody>
-                                <tr><td>Sep 10</td><td>Pinda Sweda</td><td>₹1,200</td><td><span class="badge success">Paid</span></td></tr>
-                                <tr><td>Sep 02</td><td>Bashpa Sweda</td><td>₹900</td><td><span class="badge success">Paid</span></td></tr>
-                                <tr><td>Aug 27</td><td>Nadi Sweda</td><td>₹800</td><td><span class="badge danger">Refunded</span></td></tr>
-                            </tbody>
-                        </table>
-                    </div>
-                    <button class="btn btn-outline" id="download-invoices"><i class="fas fa-download"></i> Download invoices</button>
-                </div>
-                <div class="card">
-                    <div class="section-head"><h2>Current Package</h2></div>
-                    <ul class="list payments">
-                        <li><span>Wellness Pack (4 Weeks)</span><strong>₹4,500</strong></li>
-                        <li><span>Sessions remaining</span><strong>5</strong></li>
-                    </ul>
-                </div>
-            </section>
+            
 
             <!-- Feedback -->
             <section class="grid two" id="feedback">
-                <div class="card">
-                    <div class="section-head"><h2>Rate Your Therapy</h2></div>
-                    <div class="rating" id="star-rating" aria-label="Rate 1 to 5 stars">
-                        <button data-val="1" aria-label="1 star">★</button>
-                        <button data-val="2" aria-label="2 stars">★</button>
-                        <button data-val="3" aria-label="3 stars">★</button>
-                        <button data-val="4" aria-label="4 stars">★</button>
-                        <button data-val="5" aria-label="5 stars">★</button>
-                    </div>
-                    <textarea id="review-text" rows="3" placeholder="Write your feedback..."></textarea>
-                    <button class="btn btn-primary" id="submit-review">Submit Review</button>
-                </div>
+                
                 <div class="card">
                     <div class="section-head"><h2>Past Feedback</h2></div>
                     <ul class="reviews" id="past-reviews">
@@ -230,47 +152,7 @@
                 </div>
             </section>
 
-            <!-- Settings -->
-            <section class="grid one" id="settings">
-                <div class="card">
-                    <div class="section-head"><h2>Settings</h2></div>
-                    <div class="settings-grid">
-                        <div>
-                            <label>Name</label>
-                            <input type="text" value="Vansh">
-                        </div>
-                        <div>
-                            <label>Age</label>
-                            <input type="number" value="26">
-                        </div>
-                        <div>
-                            <label>Gender</label>
-                            <select><option>Male</option><option>Female</option><option>Other</option></select>
-                        </div>
-                        <div>
-                            <label>Contact</label>
-                            <input type="text" value="+91 98XXXXXX12">
-                        </div>
-                        <div class="full">
-                            <label>Medical History (upload)</label>
-                            <input type="file" id="medical-upload" multiple>
-                        </div>
-                        <div>
-                            <label>Password</label>
-                            <input type="password" value="password">
-                        </div>
-                        <div>
-                            <label>Two Factor Auth</label>
-                            <select><option>Disabled</option><option>Enabled</option></select>
-                        </div>
-                        <div class="full">
-                            <button class="btn btn-primary" id="save-settings">Save Settings</button>
-                        </div>
-                    </div>
-                </div>
-            </section>
-        </main>
-    </div>
+            
 
     <!-- Modals -->
     <div class="modal-overlay" id="modal-overlay"></div>
