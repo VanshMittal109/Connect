@@ -150,7 +150,6 @@
 <body>
   <div class="container">
     <h1>Panchakarma Therapy Planner</h1>
-    
     <div class="therapy-selector">
       <label for="therapySelect"><strong>Select a Therapy Process:</strong></label>
       <select id="therapySelect">
@@ -158,9 +157,7 @@
       </select>
       <button onclick="addTherapy()">Add to List</button>
     </div>
-
     <div id="statusMessage" class="status-message"></div>
-
     <h2>Selected Therapies</h2>
     <ul id="therapyList" class="therapy-list">
       <li class="therapy-item">
@@ -171,27 +168,22 @@
   </div>
 
   <script>
+    // --- Script for fetching therapies and displaying them ---
     let therapies = [];
     let selectedTherapies = [];
 
-    // Load therapies when page loads
     document.addEventListener('DOMContentLoaded', loadTherapies);
 
     async function loadTherapies() {
       try {
         showStatus('Loading therapies from database...', 'info');
-        
         const response = await fetch('/api/therapies');
-        
         if (!response.ok) {
           throw new Error(`Server returned ${response.status} error`);
         }
-        
         therapies = await response.json();
-        
         const select = document.getElementById('therapySelect');
         select.innerHTML = '<option value="">Select a therapy...</option>';
-        
         therapies.forEach(therapy => {
           const option = document.createElement('option');
           option.value = therapy.id;
@@ -199,13 +191,10 @@
           option.title = therapy.description || 'No description available';
           select.appendChild(option);
         });
-        
         showStatus('Therapies loaded successfully!', 'success');
-        
       } catch (error) {
         console.error('Error loading therapies:', error);
         showStatus('Error: ' + error.message, 'error');
-        
         const select = document.getElementById('therapySelect');
         select.innerHTML = '<option value="">Error loading therapies</option>';
       }
@@ -214,23 +203,18 @@
     function addTherapy() {
       const select = document.getElementById('therapySelect');
       const selectedId = select.value;
-      
       if (!selectedId) {
         showStatus('Please select a therapy first', 'error');
         return;
       }
-      
       const therapy = therapies.find(t => t.id == selectedId);
-      
       if (selectedTherapies.some(t => t.id == selectedId)) {
         showStatus('This therapy is already in your list', 'error');
         return;
       }
-      
       selectedTherapies.push(therapy);
       updateTherapyList();
       select.value = '';
-      
       showStatus(`Added "${therapy.name}" to your list`, 'success');
     }
 
@@ -238,13 +222,11 @@
       const therapy = selectedTherapies.find(t => t.id == id);
       selectedTherapies = selectedTherapies.filter(t => t.id != id);
       updateTherapyList();
-      
       showStatus(`Removed "${therapy.name}" from your list`);
     }
 
     function updateTherapyList() {
       const list = document.getElementById('therapyList');
-      
       if (selectedTherapies.length === 0) {
         list.innerHTML = `
           <li class="therapy-item">
@@ -254,9 +236,7 @@
         `;
         return;
       }
-      
       list.innerHTML = '';
-      
       selectedTherapies.forEach(therapy => {
         const li = document.createElement('li');
         li.className = 'therapy-item';
@@ -281,16 +261,12 @@
       const statusDiv = document.getElementById('statusMessage');
       statusDiv.textContent = message;
       statusDiv.className = 'status-message';
-      
       if (type === 'error') {
         statusDiv.classList.add('status-error');
       } else if (type === 'success') {
         statusDiv.classList.add('status-success');
       }
-      
       statusDiv.style.display = 'block';
-      
-      // Clear status after 4 seconds if it's not an ongoing message
       if (type) {
         setTimeout(() => {
           statusDiv.style.display = 'none';

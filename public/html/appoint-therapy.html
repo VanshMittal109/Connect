@@ -54,46 +54,9 @@
                         </div>
 
                         <div class="form-group">
-                            <label for="therapyType">Therapy Type</label>
-                            <select id="therapyType" class="form-control" required>
-                                <option value="" disabled selected>Select therapy type...</option>
-                                <option value="cognitive">Cognitive Behavioral Therapy (CBT)</option>
-                                <option value="mindfulness">Mindfulness Meditation</option>
-                                <option value="stress">Stress Management</option>
-                                <option value="anxiety">Anxiety Relief</option>
-                                <option value="depression">Depression Counseling</option>
-                                <option value="couples">Couples Therapy</option>
-                            </select>
-                            <div id="therapyDescription" class="therapy-description"></div>
-                        </div>
-
-                        <div class="form-row">
-                            <div class="form-group">
-                                <label for="appointmentDate">Date</label>
-                                <input type="text" id="appointmentDate" class="form-control date-picker" placeholder="Select date" required>
-                            </div>
-                            <div class="form-group">
-                                <label for="appointmentTime">Time</label>
-                                <input type="text" id="appointmentTime" class="form-control time-picker" placeholder="Select time" required>
-                            </div>
-                        </div>
-
-                        <div class="form-group">
-                            <label>Session Duration</label>
-                            <div class="duration-options">
-                                <label class="duration-option">
-                                    <input type="radio" name="duration" value="30" checked>
-                                    <span>30 min</span>
-                                </label>
-                                <label class="duration-option">
-                                    <input type="radio" name="duration" value="45">
-                                    <span>45 min</span>
-                                </label>
-                                <label class="duration-option">
-                                    <input type="radio" name="duration" value="60">
-                                    <span>60 min</span>
-                                </label>
-                            </div>
+                            <label>Therapies</label>
+                            <div id="therapyList"></div>
+                            <button type="button" id="addTherapyBtn" class="btn btn-outline-primary">+ Add Therapy</button>
                         </div>
 
                         <div class="form-group">
@@ -137,5 +100,5 @@
 
     <script src="https://cdn.jsdelivr.net/npm/flatpickr"></script>
     <script src="../js/appoint-therapy.js"></script>
+
 </body>
-</html>
