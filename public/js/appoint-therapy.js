@@ -9,30 +9,97 @@ document.addEventListener('DOMContentLoaded', function() {
     // Therapy counter
     let therapyCount = 0;
     
+    // Store fetched therapies
+    let therapiesData = [];
+
     // Event Listeners
     addTherapyBtn.addEventListener('click', addTherapyBlock);
     therapyList.addEventListener('click', handleTherapyListClick);
     therapyForm.addEventListener('submit', handleFormSubmit);
     resetBtn.addEventListener('click', resetForm);
     
+    // Fetch therapies from backend and store
+    async function fetchTherapies() {
+        try {
+            const res = await fetch('/api/auth/therapies');
+            therapiesData = await res.json();
+        } catch (err) {
+            showToast('Failed to fetch therapies', 'error');
+        }
+    }
+
+    // Fetch user list for dropdown
+    async function fetchUserList() {
+        try {
+            const res = await fetch('/api/auth/user-list');
+            const users = await res.json();
+            const userSelect = document.getElementById('userSelect');
+            userSelect.innerHTML = '<option value="" disabled selected>Choose a user...</option>';
+            users.forEach(u => {
+                const option = document.createElement('option');
+                option.value = u.id;
+                option.textContent = u.name;
+                userSelect.appendChild(option);
+            });
+        } catch (err) {
+            showToast('Failed to fetch user list', 'error');
+        }
+    }
+
+    // Populate therapy dropdown for a given select element
+    function populateTherapyDropdown(selectEl) {
+        selectEl.innerHTML = '<option value="" disabled selected>Select therapy type...</option>';
+        therapiesData.forEach(t => {
+            const option = document.createElement('option');
+            option.value = t.id;
+            option.textContent = t.name;
+            selectEl.appendChild(option);
+        });
+    }
+
+    // Fetch duration for a therapy and set it in the input
+    async function setTherapyDuration(therapyId, durationInput) {
+        if (!therapyId) return;
+        try {
+            const res = await fetch(`/api/auth/therapy-duration/${therapyId}`);
+            const data = await res.json();
+            if (data.duration_days) {
+                durationInput.value = data.duration_days;
+            }
+        } catch (err) {
+            showToast('Failed to fetch duration', 'error');
+        }
+    }
+
     // Add a new therapy block
     function addTherapyBlock() {
         therapyCount++;
         const clone = document.importNode(therapyTemplate.content, true);
         const therapyCard = clone.querySelector('.therapy-card');
-        
+
         // Set therapy number
         const therapyNumber = therapyCard.querySelector('.therapy-number');
         if (therapyNumber) {
             therapyNumber.textContent = therapyCount;
         }
-        
+
         // Add data attribute to track this block
         therapyCard.dataset.index = therapyCount;
-        
+
+        // Populate therapy dropdown
+        const therapyTypeSelect = therapyCard.querySelector('.therapy-type');
+        if (therapyTypeSelect) {
+            populateTherapyDropdown(therapyTypeSelect);
+            // Add change event to fetch duration
+            const durationInput = therapyCard.querySelector('.therapy-duration');
+            therapyTypeSelect.addEventListener('change', function() {
+                setTherapyDuration(this.value, durationInput);
+            });
+        }
+
         // Append the new therapy card to the list
         therapyList.appendChild(therapyCard);
-        
+
         // Scroll to the new therapy card
         therapyCard.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
     }
@@ -87,8 +154,8 @@ document.addEventListener('DOMContentLoaded', function() {
         const gapRow = document.createElement('div');
         gapRow.className = 'gap-row';
         gapRow.innerHTML = `
-            <input type="number" class="form-control gap-duration" min="5" max="60" value="15" required>
-            <span>minutes gap before next therapy</span>
+            <input type="number" class="form-control gap-duration" default="0" required>
+            <span> gap durationn before next therapy</span>
             <button type="button" class="btn-icon remove-gap" title="Remove gap">
                 <i class="fas fa-times"></i>
             </button>
@@ -112,70 +179,45 @@ document.addEventListener('DOMContentLoaded', function() {
     }
     
     // Handle form submission
-    function handleFormSubmit(e) {
+    async function handleFormSubmit(e) {
         e.preventDefault();
-        
         // Get form data
-        const formData = {
-            userId: document.getElementById('userSelect').value,
-            sessionMode: document.querySelector('input[name="sessionMode"]:checked').value,
-            notes: document.getElementById('notes').value,
-            therapies: []
-        };
-        
-        // Get therapy data
+        const patient_id = document.getElementById('userSelect').value;
+        const therapist_id = 23;
         const therapyCards = document.querySelectorAll('.therapy-card');
-        let isValid = true;
-        
+        const therapies = [];
         therapyCards.forEach((card) => {
             const therapyType = card.querySelector('.therapy-type')?.value;
-            const duration = card.querySelector('.therapy-duration')?.value;
-            const gapDuration = card.querySelector('.gap-duration')?.value;
-            
-            // Validate therapy type
-            if (!therapyType) {
-                isValid = false;
-                card.querySelector('.therapy-type')?.classList.add('error');
-            } else {
-                card.querySelector('.therapy-type')?.classList.remove('error');
-            }
-            
-            formData.therapies.push({
-                therapyType,
-                duration: parseInt(duration, 10) || 30,
-                gapAfter: gapDuration ? parseInt(gapDuration, 10) : null
+            const duration = parseInt(card.querySelector('.therapy-duration')?.value, 10) || 0;
+            const gapDuration = parseInt(card.querySelector('.gap-duration')?.value, 10) || 0;
+            if (!therapyType) return;
+            therapies.push({
+                therapy_id: therapyType, // therapyType is the id from dropdown
+                duration_days: duration + gapDuration,
+                gap_days: gapDuration
             });
         });
-        
-        // Validate form
-        if (!formData.userId) {
-            isValid = false;
-            document.getElementById('userSelect').classList.add('error');
-            showToast('Please select a user', 'error');
-        } else {
-            document.getElementById('userSelect').classList.remove('error');
-        }
-        
-        if (therapyCards.length === 0) {
-            isValid = false;
-            showToast('Please add at least one therapy', 'error');
-        }
-        
-        if (!isValid) {
+        if (!patient_id || therapies.length === 0) {
             showToast('Please fill in all required fields', 'error');
             return;
         }
-        
-        // Log form data (in a real app, you would send this to a server)
-        console.log('Form submitted:', formData);
-        
-        // Show success message
-        showToast('Therapy session scheduled successfully!', 'success');
-        
-        // Reset form after a short delay
-        setTimeout(() => {
-            resetForm();
-        }, 1500);
+        // Send to backend
+        try {
+            const res = await fetch('/api/auth/therapy-plans', {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({ patient_id, therapist_id, therapies })
+            });
+            const result = await res.json();
+            if (res.ok) {
+                showToast('Therapy plans saved!', 'success');
+                setTimeout(() => { resetForm(); }, 1500);
+            } else {
+                showToast(result.error || 'Failed to save plans', 'error');
+            }
+        } catch (err) {
+            showToast('Network error', 'error');
+        }
     }
     
     // Reset form
@@ -214,4 +256,8 @@ document.addEventListener('DOMContentLoaded', function() {
             toast.classList.remove('show');
         }, 3000);
     }
+
+    // Initial fetch of therapies and user list on page load
+    fetchTherapies();
+    fetchUserList();
 });

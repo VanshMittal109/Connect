@@ -21,10 +21,15 @@ router.post('/therapists', createTherapist);
 
 router.post('/signin', signIn);
 
-const { getTherapies, getTherapyDuration } = require('../controllers/therapyController');
+const { getTherapies, getTherapyDuration, getUserListForDropdown } = require('../controllers/therapyController');
 // GET /api/auth/therapies (fetch therapies for dropdown)
 router.get('/therapies', getTherapies);
 
 router.get('/therapy-duration/:id', getTherapyDuration);
+
+router.get('/user-list', getUserListForDropdown);
+
+const { createTherapyPlans } = require('../controllers/therapyPlanController');
+router.post('/therapy-plans', createTherapyPlans);
 
 module.exports = router;
