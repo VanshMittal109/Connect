@@ -1,0 +1,100 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Messages • Connect</title>
+    <link rel="stylesheet" href="../css/messages.css">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+</head>
+<body>
+    <div class="app">
+        <aside class="sidebar" id="sidebar">
+            <div class="brand">
+                <button id="sidebar-toggle" class="icon-btn" aria-label="Toggle sidebar"><i class="fas fa-bars"></i></button>
+                <a href="index.html" class="logo">Ayur Sutra</a>
+            </div>
+            <nav class="menu">
+                <a class="menu-item" href="dashboard.html"><i class="fas fa-gauge"></i><span>Dashboard</span></a>
+                <a class="menu-item" href="appoint-therapy.html"><i class="fas fa-calendar-check"></i><span>Appointments</span></a>
+                <a class="menu-item" href="#patients"><i class="fas fa-user-group"></i><span>Patients</span></a>
+                <a class="menu-item active" href="messages.html"><i class="fas fa-message"></i><span>Messages</span></a>
+                <a class="menu-item" href="profile.html"><i class="fas fa-gear"></i><span>Profile</span></a>
+                <a class="menu-item" href="index.html"><i class="fas fa-right-from-bracket"></i><span>Logout</span></a>
+            </nav>
+        </aside>
+        <main class="main">
+            <header class="topbar">
+                <h1 class="welcome">Messages</h1>
+                <div class="top-actions">
+                    <button class="icon-btn" id="notify-btn" aria-label="Notifications">
+                        <i class="fas fa-bell"></i>
+                        <span class="badge" id="notify-badge">3</span>
+                    </button>
+                    <div class="profile" id="profile-menu">
+                        <img src="https://api.dicebear.com/7.x/initials/svg?seed=DS" alt="Dr. Sharma">
+                        <button class="icon-btn"><i class="fas fa-chevron-down"></i></button>
+                        <div class="dropdown" id="profile-dropdown">
+                            <a href="profile.html"><i class="fas fa-user"></i> My Profile</a>
+                            <a href="#settings"><i class="fas fa-gear"></i> Settings</a>
+                            <a href="index.html"><i class="fas fa-sign-out-alt"></i> Logout</a>
+                        </div>
+                    </div>
+                </div>
+            </header>
+
+            <div class="chat-container">
+                <!-- Left Panel: Conversation List -->
+                <aside class="conversation-list">
+                    <div class="search-bar">
+                        <i class="fas fa-search"></i>
+                        <input type="text" placeholder="Search conversations...">
+                    </div>
+                    <div class="conversations" id="conversation-list">
+                        <!-- Conversations will be populated by JavaScript -->
+                    </div>
+                </aside>
+
+                <!-- Right Panel: Chat Area -->
+                <div class="chat-area">
+                    <div class="chat-header">
+                        <div class="chat-partner">
+                            <img src="https://api.dicebear.com/7.x/initials/svg?seed=PT" alt="Patient" class="chat-avatar">
+                            <div>
+                                <h3>Select a conversation</h3>
+                                <span class="status offline">Offline</span>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="messages" id="message-container">
+                        <!-- Messages will be populated by JavaScript -->
+                        <div class="empty-state">
+                            <i class="fas fa-comment-dots"></i>
+                            <p>Select a conversation to start messaging</p>
+                        </div>
+                    </div>
+                    
+                    <div class="message-input">
+                        <button class="icon-btn" id="emoji-btn">
+                            <i class="far fa-smile"></i>
+                        </button>
+                        <input type="text" id="message-input" placeholder="Type a message..." disabled>
+                        <div class="message-actions">
+                            <button class="icon-btn" id="attach-btn">
+                                <i class="fas fa-paperclip"></i>
+                            </button>
+                            <button class="btn primary" id="send-btn" disabled>
+                                <i class="fas fa-paper-plane"></i>
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </main>
+    </div>
+
+    <script src="../js/messages.js"></script>
+</body>
+</html>
