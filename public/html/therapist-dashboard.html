@@ -1,0 +1,166 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Therapist Dashboard • Connect</title>
+    <link rel="stylesheet" href="../css/dashboard.css">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+</head>
+<body>
+    <div class="app">
+        <aside class="sidebar" id="sidebar">
+            <div class="brand">
+                <button id="sidebar-toggle" class="icon-btn" aria-label="Toggle sidebar"><i class="fas fa-bars"></i></button>
+                <a href="index.html" class="logo">Ayur Sutra</a>
+            </div>
+            <nav class="menu">
+                <a class="menu-item active" href="#"><i class="fas fa-gauge"></i><span>Dashboard</span></a>
+                <a class="menu-item" href="appoint-therapy.html"><i class="fas fa-calendar-check"></i><span>Appointments</span></a>
+                <a class="menu-item" href="#patients"><i class="fas fa-user-group"></i><span>Patients</span></a>
+                <a class="menu-item" href="add_user.html"><i class="fas fa-user-plus"></i><span>Add User</span></a>
+                <a class="menu-item" href="messages.html"><i class="fas fa-message"></i><span>Messages</span></a>
+                <a class="menu-item" href="profile.html"><i class="fas fa-gear"></i><span>Profile</span></a>
+                <a class="menu-item" onclick="logout()"><i class="fas fa-right-from-bracket"></i><span>Logout</span></a>
+            </nav>
+        </aside>
+
+        <main class="main">
+            <header class="topbar">
+                <h1 class="welcome">Welcome, Dr. Sharma 👋</h1>
+                <div class="top-actions">
+                    <button class="icon-btn" id="notify-btn" aria-label="Notifications">
+                        <i class="fas fa-bell"></i>
+                        <span class="badge" id="notify-badge">3</span>
+                    </button>
+                    <div class="profile" id="profile-menu">
+                        <img src="https://api.dicebear.com/7.x/initials/svg?seed=DS" alt="Dr. Sharma">
+                        <button class="icon-btn"><i class="fas fa-chevron-down"></i></button>
+                        <div class="dropdown" id="profile-dropdown">
+                            <a href="#settings">Settings</a>
+                            <a href="#" class="logout">Logout</a>
+                        </div>
+                    </div>
+                </div>
+            </header>
+
+            <section class="stats" id="stats">
+                <div class="card stat">
+                    <div class="stat-icon"><i class="fas fa-calendar-day"></i></div>
+                    <div>
+                        <p class="muted">Upcoming Appointments</p>
+                        <h3>6</h3>
+                    </div>
+                </div>
+                <div class="card stat">
+                    <div class="stat-icon"><i class="fas fa-user-check"></i></div>
+                    <div>
+                        <p class="muted">Active Patients</p>
+                        <h3>24</h3>
+                    </div>
+                </div>
+                <div class="card stat">
+                    <div class="stat-icon"><i class="fas fa-sack-dollar"></i></div>
+                    <div>
+                        <p class="muted">Earnings (This Month)</p>
+                        <h3>₹84,200</h3>
+                    </div>
+                </div>
+                <div class="card stat">
+                    <div class="stat-icon"><i class="fas fa-star"></i></div>
+                    <div>
+                        <p class="muted">Average Rating</p>
+                        <h3>4.7</h3>
+                    </div>
+                </div>
+            </section>
+
+            <section class="grid two" id="appointments">
+                <div class="card">
+                    <div class="section-head">
+                        <h2>Today's Schedule</h2>
+                        <div class="actions">
+                            <button class="btn btn-outline" id="btn-reschedule">Reschedule</button>
+                            <button class="btn btn-outline danger" id="btn-cancel">Cancel</button>
+                        </div>
+                    </div>
+                    <div class="table-wrap">
+                        <table class="table selectable" id="schedule-table">
+                            <thead>
+                                <tr><th>Patient</th><th>Time</th><th>Therapy</th><th>Status</th></tr>
+                            </thead>
+                            <tbody id="schedule-body">
+                                <tr data-id="1"><td>Riya Sharma</td><td>10:00</td><td>Abhyanga</td><td><span class="badge success">Completed</span></td></tr>
+                                <tr data-id="2"><td>Karan Mehta</td><td>12:15</td><td>Shirodhara</td><td><span class="badge warn">Pending</span></td></tr>
+                                <tr data-id="3"><td>Neha Verma</td><td>15:30</td><td>Swedana</td><td><span class="badge danger">Cancelled</span></td></tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+                <div class="card">
+                    <div class="section-head"><h2>Calendar</h2></div>
+                    <div id="calendar" class="calendar"></div>
+                </div>
+            </section>
+
+            <section class="grid one" id="patients">
+                <div class="card">
+                    <div class="section-head">
+                        <h2>Patient Management</h2>
+                        <div class="filters">
+                            <input type="text" id="patient-search" placeholder="Search patients...">
+                            <select id="patient-filter">
+                                <option value="all">All</option>
+                                <option value="recent">Recent</option>
+                                <option value="chronic">Chronic</option>
+                            </select>
+                        </div>
+                    </div>
+                    <div class="table-wrap">
+                        <table class="table">
+                            <thead>
+                                <tr><th>Name</th><th>Age</th><th>Condition</th><th>Last Appointment</th><th>Actions</th></tr>
+                            </thead>
+                            <tbody id="patients-body">
+                                <tr><td>Riya Sharma</td><td>29</td><td>Migraine</td><td>Sep 12</td><td><button class="mini">View</button><button class="mini">Add Notes</button></td></tr>
+                                <tr><td>Karan Mehta</td><td>34</td><td>Insomnia</td><td>Sep 10</td><td><button class="mini">View</button><button class="mini">Add Notes</button></td></tr>
+                                <tr><td>Neha Verma</td><td>31</td><td>Stress</td><td>Sep 08</td><td><button class="mini">View</button><button class="mini">Add Notes</button></td></tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </section>
+
+
+    <!-- Modals -->
+    <div class="modal-overlay" id="modal-overlay"></div>
+    <div class="modal" id="modal">
+        <button class="modal-close" id="modal-close" aria-label="Close">❌</button>
+        <h3 id="modal-title">Update Appointment</h3>
+        <div class="modal-body">
+            <label for="modal-appointment">Select Appointment</label>
+            <select id="modal-appointment"></select>
+            <div id="modal-datetime" class="datetime" hidden>
+                <label for="modal-date">Date</label>
+                <input type="date" id="modal-date">
+                <label for="modal-time">Time</label>
+                <input type="time" id="modal-time">
+            </div>
+            <label for="modal-reason">Reason</label>
+            <input type="text" id="modal-reason" placeholder="Enter reason...">
+            <div class="modal-actions">
+                <button class="btn btn-outline" id="modal-cancel">Cancel</button>
+                <button class="btn btn-primary" id="modal-save">Save</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Toasts -->
+    <div id="toasts" class="toasts"></div>
+
+    <script src="../js/dashboard.js"></script>
+</body>
+</html>
+
+
