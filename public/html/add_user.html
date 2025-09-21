@@ -1,0 +1,178 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Add New Patient • Connect</title>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+    <link rel="stylesheet" href="../css/add_user.css">
+</head>
+<body>
+    <div class="app">
+        <!-- Sidebar -->
+        <aside class="sidebar">
+            <div class="sidebar-header">
+                <i class="fa-solid fa-bars"></i>
+                <a href="admin-dashboard.html" class="logo"><b>Ayur Sutra</b></a>
+            </div>
+            <ul class="sidebar-menu">
+                <li><a href="admin-dashboard.html"><i class="fa-solid fa-gauge"></i> Dashboard</a></li>
+                <li><a href="appoint-therapy.html"><i class="fa-solid fa-calendar-check"></i> Appointments</a></li>
+                <li><a href="patient-dashboard.html"><i class="fa-solid fa-user"></i> Patients</a></li>
+                <li class="active"><a href="add_user.html"><i class="fa-solid fa-user-plus"></i> Add User</a></li>
+                <li><a href="messages.html"><i class="fa-solid fa-message"></i> Messages</a></li>
+                <li><a href="profile.html"><i class="fa-solid fa-gear"></i> Profile</a></li>
+                <li><a href="index.html"><i class="fa-solid fa-right-from-bracket"></i> Logout</a></li>
+            </ul>
+        </aside>
+
+        <!-- Main Content -->
+        <div class="main-content">
+        <header class="page-header">
+            <div class="container">
+                <h1>Add New Patient</h1>
+                <div class="top-actions">
+                    <div class="notifications" id="notifications-menu">
+                        <button class="icon-btn" id="notify-btn" aria-label="Notifications">
+                            <i class="fas fa-bell"></i>
+                            <span class="badge" id="notify-badge">2</span>
+                        </button>
+                        <div class="dropdown notifications-dropdown" id="notifications-dropdown">
+                            <div class="notification-header">
+                                <h4>Notifications</h4>
+                                <button class="mark-all-read" onclick="markAllAsRead()">Mark all as read</button>
+                            </div>
+                            <div class="notification-list">
+                                <div class="notification-item unread">
+                                    <i class="fas fa-user-plus"></i>
+                                    <div class="notification-content">
+                                        <p>New patient registration pending approval</p>
+                                        <span class="notification-time">5 minutes ago</span>
+                                    </div>
+                                </div>
+                                <div class="notification-item unread">
+                                    <i class="fas fa-calendar-check"></i>
+                                    <div class="notification-content">
+                                        <p>Appointment reminder for tomorrow</p>
+                                        <span class="notification-time">1 hour ago</span>
+                                    </div>
+                                </div>
+                                <div class="notification-item">
+                                    <i class="fas fa-info-circle"></i>
+                                    <div class="notification-content">
+                                        <p>System update completed successfully</p>
+                                        <span class="notification-time">2 hours ago</span>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </header>
+
+        <main class="wrap">
+            <section class="card form-card" id="form-card">
+                <button class="close" id="close-card" aria-label="Close">✕</button>
+                <h2 class="title">Patient Details</h2>
+                <form id="patient-form" novalidate>
+                    <div class="grid">
+                        <div class="field">
+                            <label for="name">Name</label>
+                            <input id="name" type="text" placeholder="Enter full name" required>
+                            <small class="error" data-for="name"></small>
+                        </div>
+                        <div class="field">
+                            <label for="contact">Contact Number</label>
+                            <input id="contact" type="tel" inputmode="numeric" placeholder="Enter 10-digit mobile number" required>
+                            <small class="error" data-for="contact"></small>
+                        </div>
+                        <div class="field">
+                            <label for="email">Email</label>
+                            <input id="email" type="email" placeholder="Enter email address" required>
+                            <small class="error" data-for="email"></small>
+                        </div>
+                        <div class="field">
+                            <label for="gender">Gender</label>
+                            <select id="gender" required>
+                                <option value="">Select Gender</option>
+                                <option value="Male">Male</option>
+                                <option value="Female">Female</option>
+                                <option value="Other">Other</option>
+                            </select>
+                            <small class="error" data-for="gender"></small>
+                        </div>
+                        <div class="field">
+                            <label for="join">Joining Date</label>
+                            <input id="join" type="date" name="join">
+                            <small class="error" data-for="join"></small>
+                        </div>
+                        <div class="field">
+                            <label for="dob">Date Of Birth</label>
+                            <input id="dob" type="date" name="dob" required>
+                            <small class="error" data-for="dob"></small>
+                        </div>
+                    </div>
+
+                    <div class="actions">
+                        <button type="reset" class="btn btn-outline" id="reset-btn">Reset</button>
+                        <button type="submit" class="btn btn-primary" id="submit-btn">Submit</button>
+                    </div>
+                </form>
+            </section>
+
+            <section class="card list-card" id="list-card">
+                <div class="section-head"><h2>Patient List</h2></div>
+                <div class="table-wrap">
+                    <table class="table" id="patient-table">
+                        <thead>
+                            <tr>
+                                <th>Patient ID</th>
+                                <th>Name</th>
+                                <th>Gender</th>
+                                <th>Contact</th>
+                                <th>Email</th>
+                                <th>Joining Date</th>
+                                <th>Date Of Birth</th>
+                                <th>Actions</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td>#P-101</td><td>Riya Sharma</td><td>Female</td><td>9876543210</td><td>riya@example.com</td><td>2024-09-01</td><td>2000-10-01</td>
+                                <td><button class="mini edit">Edit</button><button class="mini danger delete">Delete</button></td>
+                            </tr>
+                            <tr>
+                                <td>#P-102</td><td>Karan Mehta</td><td>Male</td><td>9123456780</td><td>karan@example.com</td><td>2024-08-20</td><td>1999-09-20</td>
+                                <td><button class="mini edit">Edit</button><button class="mini danger delete">Delete</button></td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </section>
+        </main>
+    </div>
+
+    <!-- Modal -->
+    <div class="modal-overlay" id="modal-overlay"></div>
+    <div class="modal" id="modal">
+        <button class="modal-close" id="modal-close" aria-label="Close">❌</button>
+        <h3 id="modal-title">Success</h3>
+        <div class="modal-body">
+            <p>Patient added successfully</p>
+            <div class="modal-actions">
+                <button class="btn btn-primary" id="modal-ok">OK</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Toasts -->
+    <div id="toasts" class="toasts"></div>
+
+        </div>
+    </div>
+
+    <script src="./public/js/add_user.js"></script>
+</body>
+</html>
