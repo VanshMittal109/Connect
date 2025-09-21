@@ -1,0 +1,330 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Admin Dashboard • Connect</title>
+    <link rel="stylesheet" href="../css/admin-dashboard.css">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+</head>
+<body>
+    <div class="app">
+        <!-- Sidebar -->
+        <aside class="sidebar" id="sidebar">
+            <div class="brand">
+                <button id="sidebar-toggle" class="icon-btn" aria-label="Toggle sidebar">
+                    <i class="fas fa-bars"></i>
+                </button>
+                <a href="admin-dashboard.html" class="logo">Ayur Sutra</a>
+            </div>
+            <nav class="menu">
+                <a class="menu-item active" href="admin-dashboard.html"><i class="fas fa-gauge"></i><span>Dashboard</span></a>
+                <a class="menu-item" href="appoint-therapy.html"><i class="fas fa-calendar-check"></i><span>Appointments</span></a>
+                <a class="menu-item" href="patient-dashboard.html"><i class="fas fa-user"></i><span>Patients</span></a>
+                <a class="menu-item" href="add_user.html"><i class="fas fa-user-plus"></i><span>Add User</span></a>
+                <a class="menu-item" href="messages.html"><i class="fas fa-message"></i><span>Messages</span></a>
+                <a class="menu-item" href="profile.html"><i class="fas fa-gear"></i><span>Profile</span></a>
+                <a class="menu-item" href="index.html"><i class="fas fa-right-from-bracket"></i><span>Logout</span></a>
+            </nav>
+        </aside>
+
+        <!-- Main Content -->
+        <main class="main">
+            <header class="topbar">
+                <h1 class="welcome">Welcome, Admin 👋</h1>
+                <div class="top-actions">
+                    <div class="notifications" id="notifications-menu">
+                        <button class="icon-btn" id="notify-btn" aria-label="Notifications">
+                            <i class="fas fa-bell"></i>
+                            <span class="badge" id="notify-badge">3</span>
+                        </button>
+                        <div class="dropdown notifications-dropdown" id="notifications-dropdown">
+                            <div class="notification-header">
+                                <h4>Notifications</h4>
+                                <button class="mark-all-read" onclick="markAllAsRead()">Mark all as read</button>
+                            </div>
+                            <div class="notification-list">
+                                <div class="notification-item unread">
+                                    <i class="fas fa-user-plus"></i>
+                                    <div class="notification-content">
+                                        <p>New patient registered: Riya Sharma</p>
+                                        <span class="notification-time">2 minutes ago</span>
+                                    </div>
+                                </div>
+                                <div class="notification-item unread">
+                                    <i class="fas fa-calendar-check"></i>
+                                    <div class="notification-content">
+                                        <p>Appointment scheduled for tomorrow</p>
+                                        <span class="notification-time">15 minutes ago</span>
+                                    </div>
+                                </div>
+                                <div class="notification-item">
+                                    <i class="fas fa-exclamation-triangle"></i>
+                                    <div class="notification-content">
+                                        <p>System maintenance scheduled</p>
+                                        <span class="notification-time">1 hour ago</span>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="profile" id="profile-menu">
+                        <img src="https://api.dicebear.com/7.x/initials/svg?seed=AD" alt="Admin">
+                        <button class="icon-btn"><i class="fas fa-chevron-down"></i></button>
+                        <div class="dropdown" id="profile-dropdown">
+                            <a href="#settings">Settings</a>
+                            <a href="index.html">Logout</a>
+                        </div>
+                    </div>
+                </div>
+            </header>
+
+            <!-- Stats Overview -->
+            <div class="grid three">
+                <div class="card stat-card">
+                    <div class="stat-icon">
+                        <i class="fas fa-user-md"></i>
+                    </div>
+                    <div class="stat-details">
+                        <h3>24</h3>
+                        <p>Active Therapists</p>
+                    </div>
+                </div>
+                <div class="card stat-card">
+                    <div class="stat-icon">
+                        <i class="fas fa-user"></i>
+                    </div>
+                    <div class="stat-details">
+                        <h3>156</h3>
+                        <p>Total Patients</p>
+                    </div>
+                </div>
+                <div class="card stat-card">
+                    <div class="stat-icon">
+                        <i class="fas fa-calendar-check"></i>
+                    </div>
+                    <div class="stat-details">
+                        <h3>42</h3>
+                        <p>Today's Appointments</p>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Main Content Sections -->
+            <div class="grid two">
+                <!-- Therapists Section -->
+                <section class="card" id="therapists">
+                    <div class="section-head">
+                        <h2>Therapist Management</h2>
+                        <div class="filters">
+                            <input type="text" id="therapistSearch" placeholder="Search therapists...">
+                            <button class="btn btn-add" onclick="addTherapist()">
+                                <i class="fas fa-plus"></i> Add Therapist
+                            </button>
+                        </div>
+                    </div>
+                    <div class="table-wrap">
+                        <table class="table" id="therapistTable">
+                            <thead>
+                                <tr>
+                                    <th>Name</th>
+                                    <th>Specialty</th>
+                                    <th>Status</th>
+                                    <th>Actions</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr>
+                                    <td>Dr. Sharma</td>
+                                    <td>Ayurveda</td>
+                                    <td><span class="badge success">Active</span></td>
+                                    <td class="table-actions">
+                                        <button class="btn btn-edit" onclick="editTherapist(this)">
+                                            <i class="fas fa-edit"></i>
+                                        </button>
+                                        <button class="btn btn-delete" onclick="deleteTherapist(this)">
+                                            <i class="fas fa-trash"></i>
+                                        </button>
+                                    </td>
+                                </tr>
+                                <!-- More therapist rows would go here -->
+                            </tbody>
+                        </table>
+                    </div>
+                </section>
+
+                <!-- Patients Section -->
+                <section class="card" id="patients">
+                    <div class="section-head">
+                        <h2>Recent Patients</h2>
+                        <div class="filters">
+                            <input type="text" id="patientSearch" placeholder="Search patients...">
+                        </div>
+                    </div>
+                    <div class="table-wrap">
+                        <table class="table" id="patientsTable">
+                            <thead>
+                                <tr>
+                                    <th>Name</th>
+                                    <th>Last Visit</th>
+                                    <th>Condition</th>
+                                    <th>Status</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr>
+                                    <td>Riya Sharma</td>
+                                    <td>Today</td>
+                                    <td>Migraine</td>
+                                    <td><span class="badge success">Active</span></td>
+                                </tr>
+                                <tr>
+                                    <td>Karan Mehta</td>
+                                    <td>Yesterday</td>
+                                    <td>Insomnia</td>
+                                    <td><span class="badge success">Active</span></td>
+                                </tr>
+                                <!-- More patient rows would go here -->
+                            </tbody>
+                        </table>
+                    </div>
+                </section>
+            </div>
+
+            <!-- Admin Management Section -->
+            <section class="card" id="admins">
+                <div class="section-head">
+                    <h2>Admin Management</h2>
+                    <div class="filters">
+                        <button class="btn btn-add" onclick="addAdmin()">
+                            <i class="fas fa-plus"></i> Add Admin
+                        </button>
+                    </div>
+                </div>
+                <div class="table-wrap">
+                    <table class="table" id="adminTable">
+                        <thead>
+                            <tr>
+                                <th>Name</th>
+                                <th>Email</th>
+                                <th>Role</th>
+                                <th>Last Active</th>
+                                <th>Actions</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td>Super Admin</td>
+                                <td>admin@example.com</td>
+                                <td>Super Admin</td>
+                                <td>Just now</td>
+                                <td class="table-actions">
+                                    <button class="btn btn-edit" onclick="editAdmin(this)">
+                                        <i class="fas fa-edit"></i>
+                                    </button>
+                                    <button class="btn btn-delete" onclick="deleteAdmin(this)">
+                                        <i class="fas fa-trash"></i>
+                                    </button>
+                                </td>
+                            </tr>
+                            <!-- More admin rows would go here -->
+                        </tbody>
+                    </table>
+                </div>
+            </section>
+        </main>
+    </div>
+
+
+    <!-- JS -->
+    <script src="../js/admin-dashboard.js"></script>
+    <script>
+        // Toggle sidebar
+        document.getElementById('sidebar-toggle').addEventListener('click', function() {
+            document.getElementById('sidebar').classList.toggle('open');
+        });
+
+        // Toggle notifications dropdown
+        const notificationsMenu = document.getElementById('notifications-menu');
+        if (notificationsMenu) {
+            notificationsMenu.addEventListener('click', function(e) {
+                e.stopPropagation();
+                const dropdown = this.querySelector('.notifications-dropdown');
+                if (dropdown) {
+                    dropdown.style.display = dropdown.style.display === 'block' ? 'none' : 'block';
+                }
+            });
+        }
+
+        // Toggle profile dropdown
+        const profileMenu = document.getElementById('profile-menu');
+        if (profileMenu) {
+            profileMenu.addEventListener('click', function(e) {
+                e.stopPropagation();
+                const dropdown = this.querySelector('.dropdown');
+                if (dropdown) {
+                    dropdown.style.display = dropdown.style.display === 'block' ? 'none' : 'block';
+                }
+            });
+        }
+
+        // Close dropdown when clicking outside
+        document.addEventListener('click', function(e) {
+            const dropdowns = document.querySelectorAll('.dropdown, .notifications-dropdown');
+            dropdowns.forEach(dropdown => {
+                if (!dropdown.parentElement.contains(e.target) && dropdown.style.display === 'block') {
+                    dropdown.style.display = 'none';
+                }
+            });
+        });
+
+        // Search functionality
+        document.getElementById('therapistSearch').addEventListener('input', function() {
+            const searchTerm = this.value.toLowerCase();
+            const rows = document.querySelectorAll('#therapistTable tbody tr');
+            rows.forEach(row => {
+                const name = row.cells[0].textContent.toLowerCase();
+                const specialty = row.cells[1].textContent.toLowerCase();
+                if (name.includes(searchTerm) || specialty.includes(searchTerm)) {
+                    row.style.display = '';
+                } else {
+                    row.style.display = 'none';
+                }
+            });
+        });
+
+        document.getElementById('patientSearch').addEventListener('input', function() {
+            const searchTerm = this.value.toLowerCase();
+            const rows = document.querySelectorAll('#patientsTable tbody tr');
+            rows.forEach(row => {
+                const name = row.cells[0].textContent.toLowerCase();
+                const condition = row.cells[2].textContent.toLowerCase();
+                if (name.includes(searchTerm) || condition.includes(searchTerm)) {
+                    row.style.display = '';
+                } else {
+                    row.style.display = 'none';
+                }
+            });
+        });
+    </script>
+
+    <!-- Modal Containers -->
+    <div class="modal-overlay" id="modal-overlay"></div>
+    <div class="modal" id="modal">
+        <div class="modal-header">
+            <h3 id="modal-title">Modal Title</h3>
+            <button class="modal-close" id="modal-close" aria-label="Close">
+                <i class="fas fa-times"></i>
+            </button>
+        </div>
+        <div class="modal-body" id="modal-body">
+            <!-- Modal content will be inserted here -->
+        </div>
+        <div class="modal-footer">
+            <button class="btn btn-outline" id="modal-cancel">Cancel</button>
+            <button class="btn btn-primary" id="modal-save">Save</button>
+        </div>
+    </div>
+</body>
+</html>
