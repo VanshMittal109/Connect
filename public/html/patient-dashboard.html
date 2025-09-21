@@ -1,0 +1,249 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>User Dashboard • Connect</title>
+    <link rel="stylesheet" href="../css/user-dashboard.css">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+</head>
+<body>
+    <div class="app">
+        <aside class="sidebar" id="sidebar">
+            <div class="brand">
+                <button id="sidebar-toggle" class="icon-btn" aria-label="Toggle sidebar"><i class="fas fa-bars"></i></button>
+                <a href="index.html" class="logo">Ayur Sutra</a>
+            </div>
+            <nav class="menu">
+                <a class="menu-item active" href="user-dashboard.html"><i class="fas fa-gauge"></i><span>Dashboard</span></a>
+                <a class="menu-item" href="appoint-therapy.html"><i class="fas fa-calendar-check"></i><span>My Appointments</span></a>
+                <a class="menu-item" href="#notifications"><i class="fas fa-bell"></i><span>Notifications</span></a>
+                <a class="menu-item" href="#progress"><i class="fas fa-chart-line"></i><span>Progress</span></a>
+                <a class="menu-item" href="#feedback"><i class="fas fa-star"></i><span>Feedback</span></a>
+                <a class="menu-item" href="#settings"><i class="fas fa-gear"></i><span>Settings</span></a>
+                <a class="menu-item" href="index.html"><i class="fas fa-right-from-bracket"></i><span>Logout</span></a>
+            </nav>
+        </aside>
+
+        <main class="main">
+            <header class="topbar">
+                <h1 class="welcome">Welcome, Vansh 👋</h1>
+                <div class="top-actions">
+                    <div class="notification-dropdown" id="notification-menu">
+                        <button class="icon-btn" id="notify-btn" aria-label="Notifications">
+                            <i class="fas fa-bell"></i>
+                            <span class="badge" id="notify-badge">4</span>
+                        </button>
+                        <div class="dropdown notification-list" id="notification-dropdown">
+                            <div class="dropdown-header">
+                                <h4>Notifications</h4>
+                                <button class="icon-btn" id="mark-all-read">Mark all read</button>
+                            </div>
+                            <div class="notification-item unread">
+                                <div class="notification-icon"><i class="fas fa-calendar-check"></i></div>
+                                <div class="notification-content">
+                                    <p>Appointment reminder: Bashpa Sweda tomorrow at 10:30 AM</p>
+                                    <span class="notification-time">2 hours ago</span>
+                                </div>
+                            </div>
+                            <div class="notification-item unread">
+                                <div class="notification-icon"><i class="fas fa-heart-pulse"></i></div>
+                                <div class="notification-content">
+                                    <p>Your therapy plan has been updated</p>
+                                    <span class="notification-time">1 day ago</span>
+                                </div>
+                            </div>
+                            <div class="notification-item">
+                                <div class="notification-icon"><i class="fas fa-star"></i></div>
+                                <div class="notification-content">
+                                    <p>Please rate your last therapy session</p>
+                                    <span class="notification-time">3 days ago</span>
+                                </div>
+                            </div>
+                            <div class="notification-item">
+                                <div class="notification-icon"><i class="fas fa-file-invoice"></i></div>
+                                <div class="notification-content">
+                                    <p>Invoice #312 has been paid successfully</p>
+                                    <span class="notification-time">1 week ago</span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="profile" id="profile-menu">
+                        <img src="https://api.dicebear.com/7.x/initials/svg?seed=Vansh" alt="Vansh">
+                        <span class="profile-name">Vansh</span>
+                        <button class="icon-btn"><i class="fas fa-chevron-down"></i></button>
+                        <div class="dropdown" id="profile-dropdown">
+                            <div class="profile-info">
+                                <img src="https://api.dicebear.com/7.x/initials/svg?seed=Vansh" alt="Vansh">
+                                <div>
+                                    <h4>Vansh</h4>
+                                    <p>Patient ID: P001</p>
+                                </div>
+                            </div>
+                            <div class="dropdown-divider"></div>
+                            <a href="profile.html"><i class="fas fa-user"></i> Profile</a>
+                            <a href="#settings"><i class="fas fa-gear"></i> Settings</a>
+                            <a href="#help"><i class="fas fa-question-circle"></i> Help</a>
+                            <div class="dropdown-divider"></div>
+                            <a href="#" class="logout"><i class="fas fa-right-from-bracket"></i> Logout</a>
+                        </div>
+                    </div>
+                </div>
+            </header>
+
+            <!-- Stats -->
+            <section class="stats" id="stats">
+                <div class="card stat">
+                    <div class="stat-icon"><i class="fas fa-calendar-day"></i></div>
+                    <div>
+                        <p class="muted">Upcoming Appointments</p>
+                        <h3 id="stat-upcoming">3</h3>
+                    </div>
+                </div>
+                <div class="card stat">
+                    <div class="stat-icon"><i class="fas fa-circle-check"></i></div>
+                    <div>
+                        <p class="muted">Completed Therapies</p>
+                        <h3 id="stat-completed">12</h3>
+                    </div>
+                </div>
+                <div class="card stat">
+                    <div class="stat-icon"><i class="fas fa-heart-pulse"></i></div>
+                    <div>
+                        <p class="muted">Active Plans</p>
+                        <h3 id="stat-active">2</h3>
+                    </div>
+                </div>
+                <div class="card stat">
+                    <div class="stat-icon"><i class="fas fa-chart-simple"></i></div>
+                    <div>
+                        <p class="muted">Health Score</p>
+                        <h3 id="stat-score">82%</h3>
+                    </div>
+                </div>
+            </section>
+
+            <!-- Appointments + Calendar -->
+            <section class="grid two" id="appointments">
+                <div class="card">
+                    <div class="section-head">
+                        <h2>Upcoming Appointments</h2>
+                        <div class="filters">
+                            <button class="btn btn-outline" id="btn-reschedule">Reschedule</button>
+                            <button class="btn btn-outline danger" id="btn-cancel">Cancel</button>
+                        </div>
+                    </div>
+                    <div class="table-wrap">
+                        <table class="table selectable" id="appt-table">
+                            <thead>
+                                <tr><th>Therapy</th><th>Date</th><th>Time</th><th>Therapist</th><th>Status</th></tr>
+                            </thead>
+                            <tbody id="appt-body">
+                                <tr data-id="a1"><td>Bashpa Sweda</td><td>Sep 18</td><td>10:30</td><td>Dr. Sharma</td><td><span class="badge success">Scheduled</span></td></tr>
+                                <tr data-id="a2"><td>Pinda Sweda</td><td>Sep 21</td><td>12:00</td><td>Dr. Mehta</td><td><span class="badge warn">Pending</span></td></tr>
+                                <tr data-id="a3"><td>Nadi Sweda</td><td>Sep 26</td><td>16:15</td><td>Dr. Sharma</td><td><span class="badge success">Scheduled</span></td></tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+                <div class="card">
+                    <div class="section-head">
+                        <h2>Calendar</h2>
+                        <div class="calendar-nav">
+                            <button class="icon-btn" id="prev-month"><i class="fas fa-chevron-left"></i></button>
+                            <span id="current-month">September 2024</span>
+                            <button class="icon-btn" id="next-month"><i class="fas fa-chevron-right"></i></button>
+                        </div>
+                    </div>
+                    <div class="calendar-container">
+                        <div class="calendar-header">
+                            <div>Sun</div><div>Mon</div><div>Tue</div><div>Wed</div><div>Thu</div><div>Fri</div><div>Sat</div>
+                        </div>
+                        <div id="calendar" class="calendar"></div>
+                    </div>
+                </div>
+            </section>
+
+            <!-- Therapies Accordion -->
+            <section class="grid one" id="therapies">
+
+            </section>
+
+            <!-- Notifications -->
+            <section class="grid one" id="notifications">
+                <div class="card">
+                    <div class="section-head"><h2>Notifications & Reminders</h2></div>
+                    <ul class="timeline" id="notif-list">
+                        <li><span class="time">Today</span><p>Come on empty stomach for Bashpa Sweda.</p></li>
+                        <li><span class="time">Yesterday</span><p>Avoid cold water for 2 hours post-therapy.</p></li>
+                        <li><span class="time">Sep 10</span><p>Your invoice #312 is paid successfully.</p></li>
+                    </ul>
+                </div>
+            </section>
+
+            <!-- Progress & Reports -->
+            <section class="grid two" id="progress">
+                <div class="card">
+                    <div class="section-head"><h2>Weekly Progress</h2></div>
+                    <div class="chart" id="progress-chart">
+                        <div class="bar" style="height:60%"></div>
+                        <div class="bar" style="height:70%"></div>
+                        <div class="bar" style="height:75%"></div>
+                        <div class="bar" style="height:80%"></div>
+                        <div class="bar" style="height:82%"></div>
+                        <div class="bar" style="height:84%"></div>
+                        <div class="bar" style="height:86%"></div>
+                    </div>
+                </div>
+            </section>
+
+            
+
+            <!-- Feedback -->
+            <section class="grid two" id="feedback">
+                
+                <div class="card">
+                    <div class="section-head"><h2>Past Feedback</h2></div>
+                    <ul class="reviews" id="past-reviews">
+                        <li><span class="stars">⭐⭐⭐⭐⭐</span> Feeling lighter after sessions. — Vansh (Sep 4)</li>
+                        <li><span class="stars">⭐⭐⭐⭐</span> Great experience overall. — Vansh (Aug 20)</li>
+                    </ul>
+                </div>
+            </section>
+
+            
+
+    <!-- Modals -->
+    <div class="modal-overlay" id="modal-overlay"></div>
+    <div class="modal" id="modal">
+        <button class="modal-close" id="modal-close" aria-label="Close">❌</button>
+        <h3 id="modal-title">Update Appointment</h3>
+        <div class="modal-body">
+            <label for="modal-appointment">Select Appointment</label>
+            <select id="modal-appointment"></select>
+            <div id="modal-datetime" class="datetime" hidden>
+                <label for="modal-date">Date</label>
+                <input type="date" id="modal-date">
+                <label for="modal-time">Time</label>
+                <input type="time" id="modal-time">
+            </div>
+            <label for="modal-reason">Reason</label>
+            <input type="text" id="modal-reason" placeholder="Enter reason...">
+            <div class="modal-actions">
+                <button class="btn btn-outline" id="modal-cancel">Cancel</button>
+                <button class="btn btn-primary" id="modal-save">Save</button>
+            </div>
+        </div>
+    </div>
+
+
+    <!-- Toasts -->
+    <div id="toasts" class="toasts"></div>
+
+    <script src="../js/patient-dashboard.js"></script>
+</body>
+</html>
+
+
